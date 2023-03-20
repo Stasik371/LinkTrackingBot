@@ -14,7 +14,6 @@ public final class GitHubParser implements Parser {
     @Override
     public Record parse(@NotNull URI uri) {
         var path = uri.getPath();
-        System.out.println(path);
         var regexForGitHub = "^/\\w+/\\w+$";
         if (path.matches(regexForGitHub)) {
             var patternForUser = Pattern.compile("\\w+");
