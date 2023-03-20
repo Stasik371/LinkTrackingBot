@@ -1,32 +1,28 @@
 package ru.tinkoff.edu.java.linkparser.parsers;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.tinkoff.edu.java.linkparser.records.StackOverFlowRecord;
 
 import java.net.URI;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+
 
 
 public final class StackOverFlowParser implements Parser {
 
+    @Nullable
     @Override
-    public Record parse(URI uri) {
-        if (!uri.getHost().equals("stackoverflow.com")) return null;
+    public Record parse(@NotNull URI uri) {
         var path = uri.getPath();
         var regexForStackOverFlow = "/questions/\\d+/.+";
         if (path.matches(regexForStackOverFlow)) {
-            Pattern pattern = Pattern.compile("\\d+");
-            Matcher matcher = pattern.matcher(path);
-            int start = 0;
-            matcher.find(start);
+            var pattern = Pattern.compile("\\d+");
+            var matcher = pattern.matcher(path);
+            matcher.find(0);
             String id = path.substring(matcher.start(), matcher.end());
-            var record = new StackOverFlowRecord(id);
-            return record;
+            return new StackOverFlowRecord(id);
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new StackOverFlowParser().parse(URI.create("https://stackoverflow.com/search?q=unsupported%20link")));
     }
 }
