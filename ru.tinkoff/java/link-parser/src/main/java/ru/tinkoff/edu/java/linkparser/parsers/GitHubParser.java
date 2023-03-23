@@ -10,13 +10,17 @@ import java.util.regex.Pattern;
 
 public final class GitHubParser implements Parser {
 
+    private final Pattern patternForUser;
+    public GitHubParser() {
+        patternForUser = Pattern.compile("\\w+");
+    }
+
     @Nullable
     @Override
     public Record parse(@NotNull URI uri) {
         var path = uri.getPath();
         var regexForGitHub = "^/\\w+/\\w+$";
         if (path.matches(regexForGitHub)) {
-            var patternForUser = Pattern.compile("\\w+");
             var matcherForUser = patternForUser.matcher(path);
             matcherForUser.find(0);
             String user = path.substring(matcherForUser.start(), matcherForUser.end());

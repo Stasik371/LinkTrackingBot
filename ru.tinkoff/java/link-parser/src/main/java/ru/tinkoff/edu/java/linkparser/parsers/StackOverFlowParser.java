@@ -8,8 +8,12 @@ import java.net.URI;
 import java.util.regex.Pattern;
 
 
-
 public final class StackOverFlowParser implements Parser {
+    private final Pattern pattern;
+
+    public StackOverFlowParser() {
+        pattern = Pattern.compile("\\d+");
+    }
 
     @Nullable
     @Override
@@ -17,7 +21,6 @@ public final class StackOverFlowParser implements Parser {
         var path = uri.getPath();
         var regexForStackOverFlow = "/questions/\\d+/.+";
         if (path.matches(regexForStackOverFlow)) {
-            var pattern = Pattern.compile("\\d+");
             var matcher = pattern.matcher(path);
             matcher.find(0);
             String id = path.substring(matcher.start(), matcher.end());
