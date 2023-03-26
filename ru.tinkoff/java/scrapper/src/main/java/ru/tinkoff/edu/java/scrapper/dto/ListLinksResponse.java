@@ -1,4 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.dto;
 
-public record ListLinksResponse(LinkResponse[] links, int size) {
+import jakarta.validation.constraints.NotNull;
+
+public record ListLinksResponse(@NotNull LinkResponse[] links, int size) {
 }

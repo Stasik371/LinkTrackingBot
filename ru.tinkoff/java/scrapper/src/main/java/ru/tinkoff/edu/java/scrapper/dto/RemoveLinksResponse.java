@@ -1,4 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.dto;
 
-public record RemoveLinksResponse(String link) {
+import org.jetbrains.annotations.NotNull;
+
+public record RemoveLinksResponse(@NotNull String link) {
 }

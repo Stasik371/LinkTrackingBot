@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.dto;
 
 
-public record AddLinkRequest(String link) {
+import org.hibernate.validator.constraints.URL;
+
+public record AddLinkRequest(@URL String link) {
 }
