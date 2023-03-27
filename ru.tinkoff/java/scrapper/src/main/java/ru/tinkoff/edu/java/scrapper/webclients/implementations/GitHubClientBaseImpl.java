@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.webclients.implementations;
 
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.webclients.builders.GitHubWebClientBuilder;

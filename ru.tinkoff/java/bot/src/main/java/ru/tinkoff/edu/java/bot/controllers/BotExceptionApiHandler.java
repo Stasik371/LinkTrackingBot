@@ -38,5 +38,29 @@ public class BotExceptionApiHandler {
         return ResponseEntity.status(400).body(apiErrorResponse);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorResponse> illegalArgumentExceptionHandler(@NotNull IllegalArgumentException exception) {
+        var apiErrorResponse = new ApiErrorResponse(
+                "Illegal arguments",
+                "400",
+                "IllegalArgumentException",
+                exception.getMessage(),
+                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
+        return ResponseEntity.status(400).body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorResponse> unknownExceptionHandler(@NotNull Exception exception) {
+        var apiErrorResponse = new ApiErrorResponse(
+                "Unknown exception, read stackTrace",
+                "400",
+                exception.getClass().toString(),
+                exception.getMessage(),
+                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
+        return ResponseEntity.status(400).body(apiErrorResponse);
+    }
+
 
 }
