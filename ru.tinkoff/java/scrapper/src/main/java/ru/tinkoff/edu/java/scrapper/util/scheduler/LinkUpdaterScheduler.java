@@ -13,6 +13,6 @@ import java.time.OffsetDateTime;
 public class LinkUpdaterScheduler {
     @Scheduled(fixedDelayString = "#{@schedulerIntervalInMs}")
     public void update() {
-        System.out.println("LinkUpdaterScheduler log: " + OffsetDateTime.now().toLocalDateTime());
+        System.out.println("LinkUpdaterScheduler log: " + OffsetDateTime.now());
     }
 }
