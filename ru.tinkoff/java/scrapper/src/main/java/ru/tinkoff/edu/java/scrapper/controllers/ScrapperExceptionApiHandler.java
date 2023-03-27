@@ -19,7 +19,7 @@ import java.util.Arrays;
 @RestControllerAdvice
 public class ScrapperExceptionApiHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    //@ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiErrorResponse> httpMessageNotReadableExceptionHandler(@NotNull HttpMessageNotReadableException exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "No request Body",
@@ -31,7 +31,7 @@ public class ScrapperExceptionApiHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    //@ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiErrorResponse> methodArgumentNotValidExceptionHandler(@NotNull MethodArgumentNotValidException exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "Arguments are not valid",
@@ -43,7 +43,7 @@ public class ScrapperExceptionApiHandler {
     }
 
     @ExceptionHandler
-    //@ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiErrorResponse> chatNotFoundExceptionHandler(@NotNull ChatNotFoundException exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "Chat not found",
@@ -55,7 +55,7 @@ public class ScrapperExceptionApiHandler {
     }
 
     @ExceptionHandler(ReRegistrationException.class)
-    //@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ResponseEntity<ApiErrorResponse> reRegistrationExceptionHandler(@NotNull ReRegistrationException exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "Repeated registration",
@@ -67,7 +67,7 @@ public class ScrapperExceptionApiHandler {
     }
 
     @ExceptionHandler(ReAddingALinkException.class)
-    //@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ResponseEntity<ApiErrorResponse> reAddingALinkExceptionHandler(@NotNull ReAddingALinkException exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "Link has already been added",
@@ -79,7 +79,7 @@ public class ScrapperExceptionApiHandler {
     }
 
     @ExceptionHandler(LinkNotFoundException.class)
-    //@ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiErrorResponse> linkNotFoundExceptionHandler(@NotNull LinkNotFoundException exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "Link not found",
