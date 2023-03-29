@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.dto;
+package ru.tinkoff.edu.java.scrapper.controllers.dto.response;
 
 import org.hibernate.validator.constraints.URL;
 

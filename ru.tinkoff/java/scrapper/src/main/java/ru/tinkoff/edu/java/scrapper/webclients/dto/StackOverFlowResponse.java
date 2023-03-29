@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.dto;
+package ru.tinkoff.edu.java.scrapper.webclients.dto;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.validation.constraints.NotNull;

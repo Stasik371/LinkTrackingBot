@@ -4,11 +4,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 
-@Configuration
+@Component
 @EnableScheduling
 public class LinkUpdaterScheduler {
     @Scheduled(fixedDelayString = "#{@schedulerIntervalInMs}")

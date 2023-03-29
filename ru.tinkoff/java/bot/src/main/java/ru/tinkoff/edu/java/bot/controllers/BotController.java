@@ -4,12 +4,11 @@ package ru.tinkoff.edu.java.bot.controllers;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
-import ru.tinkoff.edu.java.bot.dto.LinkUpdateRequest;
+import ru.tinkoff.edu.java.bot.controllers.dto.LinkUpdateRequest;
 
 @RestController
 public class BotController {

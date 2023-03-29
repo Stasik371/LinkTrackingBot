@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.bot.dto;
+package ru.tinkoff.edu.java.bot.controllers.dto;
 
 import org.hibernate.validator.constraints.URL;
 

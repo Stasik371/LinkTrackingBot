@@ -3,7 +3,7 @@ package ru.tinkoff.edu.java.scrapper.webclients.implementations;
 import jakarta.validation.constraints.NotNull;
 
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.tinkoff.edu.java.scrapper.dto.StackOverFlowResponse;
+import ru.tinkoff.edu.java.scrapper.webclients.dto.StackOverFlowResponse;
 import ru.tinkoff.edu.java.scrapper.webclients.builders.StackOverFlowWebClientBuilder;
 import ru.tinkoff.edu.java.scrapper.webclients.interfaces.StackOverFlowClient;
 
