@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import reactor.core.publisher.Mono;
-import ru.tinkoff.edu.java.bot.webclients.dto.link.request.ApiErrorResponse;
+import ru.tinkoff.edu.java.bot.webclients.dto.link.response.ApiErrorResponse;
 
 public class WebClientBuilderStatusCodeHandlers {
 

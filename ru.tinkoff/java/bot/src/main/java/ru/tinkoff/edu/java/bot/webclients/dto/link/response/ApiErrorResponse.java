@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.bot.webclients.dto.link.request;
+package ru.tinkoff.edu.java.bot.webclients.dto.link.response;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
