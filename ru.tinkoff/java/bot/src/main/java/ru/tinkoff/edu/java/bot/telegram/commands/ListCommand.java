@@ -13,7 +13,8 @@ public class ListCommand implements Command {
     private String COMMAND = "/list";
     private String DESCRIPTION = COMMAND + " -> все отслеживаемые ссылки.";
 
-    private String ANSWER = "Список отслеживаемых ссылок:\n";
+    private String GOOD_ANSWER = "Список отслеживаемых ссылок:\n";
+    private String BAD_ANSWER = "Нет отслеживаемых ссылок";
 
     @Autowired
     public ListCommand(LinksClient linksClient) {
@@ -34,8 +35,9 @@ public class ListCommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         var links = linksClient.getAllLinks(update.message().chat().id());
+        if (links.size() == 0) return new SendMessage(update.message().chat().id(), BAD_ANSWER);
         var answer = new StringBuilder();
-        answer.append(ANSWER);
+        answer.append(GOOD_ANSWER);
         for (int i = 0; i < links.size(); i++) {
             answer.append(links.links()[i].url().toString() + "\n");
         }
