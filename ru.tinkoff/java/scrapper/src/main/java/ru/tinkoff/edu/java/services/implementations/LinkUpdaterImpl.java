@@ -54,24 +54,10 @@ public class LinkUpdaterImpl implements LinkUpdater {
                 var lastPush = link.lastActivity();
                 if (!response.issuesCount().equals(issueCount)) {
                     issueCount = response.issuesCount();
-                    botClient.sendUpdates(new LinkUpdate(link.id(),
-                            link.uri().toString(),
-                            "LinkModel " + link.uri() + " has new issue.",
-                            chatRepository
-                                    .readAllByURI(link.uri())
-                                    .stream()
-                                    .map(TgChatModel::tgChatId).mapToLong(val -> val)
-                                    .toArray()));
+                    sendUpdates(link, "LinkModel " + link.uri() + " has new issue.");
                 } else if (response.pushedAt().isAfter(lastPush)) {
                     lastPush = response.pushedAt();
-                    botClient.sendUpdates(new LinkUpdate(link.id(),
-                            link.uri().toString(),
-                            "LinkModel " + link.uri() + " has new updates.",
-                            chatRepository
-                                    .readAllByURI(link.uri())
-                                    .stream()
-                                    .map(TgChatModel::tgChatId).mapToLong(val -> val)
-                                    .toArray()));
+                    sendUpdates(link, "LinkModel " + link.uri() + " has new updates.");
                 }
                 linkRepository.update(new LinkModel(link.id(), link.tgChatId(), link.uri(),
                         newCheck, lastPush, issueCount, link.answerCount()));
@@ -82,29 +68,26 @@ public class LinkUpdaterImpl implements LinkUpdater {
                 var answerCount = link.answerCount();
                 if (!response.answerCount().equals(link.answerCount())) {
                     answerCount = response.answerCount();
-                    botClient.sendUpdates(new LinkUpdate(link.id(),
-                            link.uri().toString(),
-                            "LinkModel " + link.uri() + " has new questions.",
-                            chatRepository
-                                    .readAllByURI(link.uri())
-                                    .stream()
-                                    .map(TgChatModel::tgChatId).mapToLong(val -> val)
-                                    .toArray()));
+                    sendUpdates(link, "LinkModel " + link.uri() + " has new questions.");
                 } else if (!response.lastActivityDate().isAfter(link.lastActivity())) {
                     lastActivity = response.lastActivityDate();
-                    botClient.sendUpdates(new LinkUpdate(link.id(),
-                            link.uri().toString(),
-                            "LinkModel " + link.uri() + " has new updates.",
-                            chatRepository
-                                    .readAllByURI(link.uri())
-                                    .stream()
-                                    .map(TgChatModel::tgChatId).mapToLong(val -> val)
-                                    .toArray()));
+                    sendUpdates(link, "LinkModel " + link.uri() + " has new updates.");
                 }
                 linkRepository.update(new LinkModel(link.id(), link.tgChatId(), link.uri(),
                         newCheck, lastActivity, link.issueCount(), answerCount));
             }
         }
 
+    }
+
+    private void sendUpdates(LinkModel link, String message) {
+        botClient.sendUpdates(new LinkUpdate(link.id(),
+                link.uri().toString(),
+                message,
+                chatRepository
+                        .readAllByURI(link.uri())
+                        .stream()
+                        .map(TgChatModel::tgChatId).mapToLong(val -> val)
+                        .toArray()));
     }
 }

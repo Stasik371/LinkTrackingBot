@@ -11,5 +11,9 @@ public record LinkModel(long id, long tgChatId, URI uri, OffsetDateTime lastChec
         this(-1, tgChatId, uri, OffsetDateTime.now(), OffsetDateTime.now(), 0, 0);
     }
 
+    public LinkModel(long tgChatId, URI uri, OffsetDateTime lastActivity, int issueCount, int answerCount) {
+        this(-1, tgChatId, uri, OffsetDateTime.now(), lastActivity, issueCount, answerCount);
+    }
+
 
 }
