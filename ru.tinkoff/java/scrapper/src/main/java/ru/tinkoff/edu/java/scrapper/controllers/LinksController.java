@@ -1,14 +1,13 @@
 package ru.tinkoff.edu.java.scrapper.controllers;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.edu.java.scrapper.dto.AddLinkRequest;
-import ru.tinkoff.edu.java.scrapper.dto.ListLinksResponse;
-import ru.tinkoff.edu.java.scrapper.dto.RemoveLinkRequest;
+import ru.tinkoff.edu.java.scrapper.controllers.dto.request.AddLinkRequest;
+import ru.tinkoff.edu.java.scrapper.controllers.dto.response.LinkResponse;
+import ru.tinkoff.edu.java.scrapper.controllers.dto.response.ListLinksResponse;
+import ru.tinkoff.edu.java.scrapper.controllers.dto.request.RemoveLinkRequest;
 
 
 @RestController
@@ -25,26 +24,25 @@ public class LinksController {
     }
 
     @PostMapping
+    public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") long tgChatId,
+                                                @RequestBody @Valid AddLinkRequest linkRequest) {
+        try {
+            //TODO
+        } catch (Exception e) {
+            //TODO
+        }
+        return new ResponseEntity<>(new LinkResponse(-1, null), HttpStatus.OK);
+    }
 
-    public ResponseEntity<RemoveLinkRequest> addLink(@RequestHeader("Tg-Chat-Id") long tgChatId,
-                                                     @RequestBody @Valid AddLinkRequest linkRequest) {
+    @DeleteMapping
+    public ResponseEntity<RemoveLinkRequest> deleteLink(@RequestHeader("Tg-Chat-Id") long tgChatId,
+                                                        @RequestBody @Valid RemoveLinkRequest linkRequest) {
         try {
             //TODO
         } catch (Exception e) {
             //TODO
         }
         return new ResponseEntity<>(new RemoveLinkRequest(null), HttpStatus.OK);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<AddLinkRequest> deleteLink(@RequestHeader("Tg-Chat-Id") long tgChatId,
-                                                     @RequestBody @Valid RemoveLinkRequest linkRequest) {
-        try {
-            //TODO
-        } catch (Exception e) {
-            //TODO
-        }
-        return new ResponseEntity<>(new AddLinkRequest(null), HttpStatus.OK);
     }
 
 
