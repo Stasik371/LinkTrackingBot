@@ -10,11 +10,11 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.LinksClient;
 @Component
 public class ListCommand implements Command {
     private final LinksClient linksClient;
-    private String COMMAND = "/list";
-    private String DESCRIPTION = COMMAND + " -> все отслеживаемые ссылки.";
+    private final String COMMAND = "/list";
+    private final String DESCRIPTION = "Все отслеживаемые ссылки.";
 
-    private String GOOD_ANSWER = "Список отслеживаемых ссылок:\n";
-    private String BAD_ANSWER = "Нет отслеживаемых ссылок";
+    private final String GOOD_ANSWER = "Список отслеживаемых ссылок:\n";
+    private final String BAD_ANSWER = "Нет отслеживаемых ссылок";
 
     @Autowired
     public ListCommand(LinksClient linksClient) {

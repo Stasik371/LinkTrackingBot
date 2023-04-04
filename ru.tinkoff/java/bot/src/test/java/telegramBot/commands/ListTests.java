@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,8 +42,8 @@ public class ListTests {
     @InjectMocks
     private UserManagerProcessorImpl messageProcessor = new UserManagerProcessorImpl(listCommand);
 
-
-    private Update reflectionArrange(String messageFieldValue, String lastCommandFieldValue) throws IllegalAccessException, NoSuchFieldException {
+    @SneakyThrows
+    private Update reflectionArrange(String messageFieldValue, String lastCommandFieldValue) {
         var message = new Message();
         var messageClass = message.getClass();
         var messageField = messageClass.getDeclaredField("text");
@@ -84,13 +85,11 @@ public class ListTests {
     @DisplayName("List command test OK case")
     void processListCommand_fullList() throws NoSuchFieldException, IllegalAccessException {
         LinkResponse link1 = new LinkResponse(1L, URI.create("https://github.com/sanyarnd/tinkoff-java-course-2022/"));
-        LinkResponse link2 = new LinkResponse(2L, URI.create("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c"));
+        LinkResponse link2 = new LinkResponse(1L, URI.create("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c"));
         var linksList = new ListLinksResponse(new LinkResponse[]{link1, link2}, 2);
         String messageText = "Список отслеживаемых ссылок:\n" +
                 link1.url().toString() + "\n" +
                 link2.url().toString() + "\n";
-
-
         when(client.getAllLinks(anyLong())).thenReturn(linksList);
         SendMessage messageFromProcessor = messageProcessor.process(reflectionArrange("/list", "/list"));
         assertThat(messageText, equalTo(messageFromProcessor.getParameters().get("text")));
@@ -102,12 +101,8 @@ public class ListTests {
     void processListCommand_emptyList() throws NoSuchFieldException, IllegalAccessException {
         String emptyListMessage = "Нет отслеживаемых ссылок";
         ListLinksResponse response = new ListLinksResponse(new LinkResponse[0], 0);
-
-
         when(client.getAllLinks(CHAT_ID)).thenReturn(response);
-
         SendMessage messageFromProcessor = messageProcessor.process(reflectionArrange("/list", "/list"));
-
         assertThat(emptyListMessage, equalTo(messageFromProcessor.getParameters().get("text")));
         assertThat(CHAT_ID, equalTo(messageFromProcessor.getParameters().get("chat_id")));
 

@@ -11,7 +11,7 @@ import ru.tinkoff.edu.java.bot.telegram.bot.Bot;
 import ru.tinkoff.edu.java.bot.telegram.bot.TelegramBotImpl;
 
 
-@Validated
+
 @ConfigurationProperties(prefix = "bot", ignoreUnknownFields = false)
 public class BotConfig {
     @Setter

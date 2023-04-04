@@ -8,7 +8,7 @@ import ru.tinkoff.edu.java.bot.webclients.implementations.TGChatClientImpl;
 import ru.tinkoff.edu.java.bot.webclients.interfaces.LinksClient;
 import ru.tinkoff.edu.java.bot.webclients.interfaces.TGChatClient;
 
-@Validated
+
 @ConfigurationProperties(prefix = "client", ignoreUnknownFields = false)
 public record ClientsConfig(String linksBaseUrl, String tgChatBaseUrl) {
 

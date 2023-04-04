@@ -9,10 +9,10 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.TGChatClient;
 @Component
 public class StartCommand implements Command {
     private final TGChatClient tgChatClient;
-    private String COMMAND = "/start";
-    private String DESCRIPTION = COMMAND + " -> запуск/перезапуск бота.";
+    private final String COMMAND = "/start";
+    private final String DESCRIPTION = "Запуск/перезапуск бота.";
 
-    private String ANSWER = "Привет! Чтобы получить список доступных комманд используйте /help";
+    private final String ANSWER = "Привет! Чтобы получить список доступных комманд используйте /help";
 
     @Autowired
     public StartCommand(TGChatClient tgChatClient) {

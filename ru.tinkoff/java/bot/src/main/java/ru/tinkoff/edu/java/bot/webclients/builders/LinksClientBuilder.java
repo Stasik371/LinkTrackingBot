@@ -4,7 +4,7 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class LinksClientBuilder implements WebClientBuilder {
-    private String baseUrlFromProperties;
+    private final String baseUrlFromProperties = "http:localhost:8080";
     @Override
     public final WebClient build(String baseUrl) {
         WebClient.Builder webClient;

@@ -9,12 +9,12 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.LinksClient;
 @Component
 public class UntrackCommand implements Command {
     private final LinksClient linksClient;
-    private String COMMAND = "/untrack";
-    private String DESCRIPTION = COMMAND + " -> перестать отслеживать ссылку.";
+    private final String COMMAND = "/untrack";
+    private final String DESCRIPTION = "Перестать отслеживать ссылку.";
 
-    private String GOOD_ANSWER = "Ссылка успешна удалена";
-    private String GOOD_ANSWER_BEFORE = "Введите ссылку в формате URL, которую хотите прекратить отслеживать";
-    private String BAD_ANSWER = "Такой ссылки не существует, бот поддерживает ссылки в формате URL";
+    private final String GOOD_ANSWER = "Ссылка успешна удалена";
+    private final String GOOD_ANSWER_BEFORE = "Введите ссылку в формате URL, которую хотите прекратить отслеживать";
+    private final String BAD_ANSWER = "Такой ссылки не существует, бот поддерживает ссылки в формате URL";
 
     public UntrackCommand(LinksClient linksClient) {
         this.linksClient = linksClient;
@@ -34,7 +34,7 @@ public class UntrackCommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         var msg = update.message().text();
-        if (msg.toCharArray()[0] == '/') return new SendMessage(update.message().chat().id(), GOOD_ANSWER_BEFORE);
+        if (msg.startsWith("/")) return new SendMessage(update.message().chat().id(), GOOD_ANSWER_BEFORE);
         linksClient.deleteLink(update.message().chat().id(), new RemoveLinkRequest(update.message().text()));
         return new SendMessage(update.message().chat().id(), GOOD_ANSWER);
     }

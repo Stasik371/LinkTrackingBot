@@ -4,7 +4,7 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class TGChatClientBuilder implements WebClientBuilder {
-    private String baseUrlFromProperties;
+    private final String baseUrlFromProperties = "http:localhost:8080";
 
     @Override
     public WebClient build(String baseUrl) {

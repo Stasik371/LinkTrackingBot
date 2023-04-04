@@ -2,15 +2,17 @@ package ru.tinkoff.edu.java.bot.telegram.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HelpCommand implements Command {
 
-    private String COMMAND = "/help";
-    private String DESCRIPTION = COMMAND + " -> все доступные команды.";
+    private final String COMMAND = "/help";
+    private final String DESCRIPTION = "Все доступные команды.";
 
-    private String ANSWER = "Список доступных команд: \n" +
+    private final String ANSWER = "Список доступных команд: \n" +
+            "/start - Запуск/перезапуск бота.\n" +
             "/help - Список доступных команд.\n" +
             "/track - Начать отслеживание ссылки.\n" +
             "/untrack - Перестать отслеживать ссылку.\n" +

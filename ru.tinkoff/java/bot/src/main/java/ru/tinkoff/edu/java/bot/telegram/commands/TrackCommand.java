@@ -11,12 +11,12 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.LinksClient;
 public class TrackCommand implements Command {
 
     private final LinksClient linksClient;
-    private String COMMAND = "/track";
-    private String DESCRIPTION = COMMAND + " -> отследить ссылку.";
+    private final String COMMAND = "/track";
+    private final String DESCRIPTION = "Отследить ссылку.";
 
-    private String GOOD_ANSWER_BEFORE = "Введите ссылку в формате URL, которую хотите отслеживать";
-    private String GOOD_ANSWER = "Ссылка успешна добавлена";
-    private String BAD_ANSWER = "Некорректная ссылка, бот поддерживает ссылки в формате URL";
+    private final String GOOD_ANSWER_BEFORE = "Введите ссылку в формате URL, которую хотите отслеживать";
+    private final String GOOD_ANSWER = "Ссылка успешна добавлена";
+    private final String BAD_ANSWER = "Некорректная ссылка, бот поддерживает ссылки в формате URL";
 
     @Autowired
     public TrackCommand(LinksClient linksClient) {
@@ -36,7 +36,7 @@ public class TrackCommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         var msg = update.message().text();
-        if (msg.toCharArray()[0] == '/') return new SendMessage(update.message().chat().id(), GOOD_ANSWER_BEFORE);
+        if (msg.startsWith("/")) return new SendMessage(update.message().chat().id(), GOOD_ANSWER_BEFORE);
         linksClient.addLink(update.message().chat().id(), new AddLinkRequest(msg));
         return new SendMessage(update.message().chat().id(), GOOD_ANSWER);
     }

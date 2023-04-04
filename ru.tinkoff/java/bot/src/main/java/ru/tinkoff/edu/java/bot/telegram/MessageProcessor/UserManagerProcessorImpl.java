@@ -15,7 +15,7 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
     private String lastCommand;
 
 
-    private final List<? extends Command> commands;
+    private final List<Command> commands;
 
     private Command searchCommandInList(String commandName) {
         return commands.stream()
@@ -28,9 +28,14 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
         return commands;
     }
 
-    @Autowired
+
     public UserManagerProcessorImpl(Command... commands) {
         this.commands = Arrays.stream(commands).toList();
+    }
+
+    @Autowired
+    public UserManagerProcessorImpl(List<Command> commandList) {
+        this.commands = commandList;
     }
 
     @Override
