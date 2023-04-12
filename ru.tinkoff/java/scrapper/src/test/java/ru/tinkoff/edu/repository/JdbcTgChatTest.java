@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.IntegrationEnvironment;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.TgChatMapper;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.TgChat;
-import ru.tinkoff.edu.java.scrapper.domain.jdbc.repository.JdbcTgChatJdbcRepositoryImpl;
+import ru.tinkoff.edu.java.scrapper.domain.jdbc.repository.JdbcTgChatRepository;
 
 import javax.sql.DataSource;
 
@@ -29,7 +29,7 @@ public class JdbcTgChatTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
-    private JdbcTgChatJdbcRepositoryImpl jdbcTgchatRepository;
+    private JdbcTgChatRepository jdbcTgchatRepository;
 
     @Autowired
     private TgChatMapper tgChatMapper;
@@ -65,8 +65,7 @@ public class JdbcTgChatTest extends IntegrationEnvironment {
     @DisplayName("Create operation test")
     public void addTest() {
         var newTgChatId = 89L;
-        var tgChat = new TgChat(newTgChatId);
-        jdbcTgchatRepository.add(tgChat);
+        jdbcTgchatRepository.add(newTgChatId);
         List<TgChat> all = jdbcTemplate.query("select * from chat", tgChatMapper);
         assertThat(chatsId.size() + 1, equalTo(all.size()));
         assertThat(newTgChatId, equalTo(all.get(all.size() - 1).tgChatId()));

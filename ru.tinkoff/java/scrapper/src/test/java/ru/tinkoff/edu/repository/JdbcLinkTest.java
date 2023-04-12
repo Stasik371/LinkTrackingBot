@@ -2,7 +2,6 @@ package ru.tinkoff.edu.repository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.junit.After;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,10 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.IntegrationEnvironment;
 
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.LinkMapper;
-import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.TgChatMapper;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.Link;
-import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.TgChat;
-import ru.tinkoff.edu.java.scrapper.domain.jdbc.repository.JdbcLinkRepositoryImpl;
+import ru.tinkoff.edu.java.scrapper.domain.jdbc.repository.JdbcLinkRepository;
 
 
 import javax.sql.DataSource;
@@ -33,7 +30,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
-    private JdbcLinkRepositoryImpl jdbcLinkRepository;
+    private JdbcLinkRepository jdbcLinkRepository;
 
     @Autowired
     private LinkMapper linkMapper;
@@ -46,8 +43,6 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @BeforeEach
     public void createRecords() {
         jdbcTemplate.update("insert into chat(telegram_chat_id) values (?)", 1);
-        List<TgChat> all1 = jdbcTemplate.query("select * from chat", new TgChatMapper());
-        all1.forEach(System.out::println);
         for (var url : urls) {
             jdbcTemplate.update("insert into link(chat_id, uri, last_checked_at) values (?, ?, ?)",
                     1, url, OffsetDateTime.now());
@@ -60,7 +55,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Rollback
     @DisplayName("Find all operation test")
     public void findAllTest() {
-        List<Link> allLinks = jdbcLinkRepository.readAll();
+        List<Link> allLinks = jdbcLinkRepository.readAll(1);
         assertThat(urls.size(), equalTo(allLinks.size()));
         var i = 0;
         for (var url : urls) {
@@ -75,7 +70,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @DisplayName("Create operation test")
     public void addTest() {
         var newUrl = URI.create("https://github.com/Stasik371/VkCoursesHW2");
-        Link link = new Link(1, newUrl, OffsetDateTime.now());
+        Link link = new Link(1, newUrl);
         jdbcLinkRepository.add(link);
         List<Link> all = jdbcTemplate.query("select * from link", linkMapper);
         assertThat(urls.size() + 1, equalTo(all.size()));

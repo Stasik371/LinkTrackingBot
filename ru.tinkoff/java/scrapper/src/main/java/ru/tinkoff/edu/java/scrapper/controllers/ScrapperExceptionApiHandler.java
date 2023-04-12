@@ -8,11 +8,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.MethodNotAllowedException;
 import ru.tinkoff.edu.java.scrapper.controllers.dto.response.ApiErrorResponse;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.LinkNotFoundException;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.ReAddingALinkException;
-import ru.tinkoff.edu.java.scrapper.util.exceptions.ReRegistrationException;
 
 import java.util.Arrays;
 
@@ -54,17 +54,18 @@ public class ScrapperExceptionApiHandler {
         return ResponseEntity.status(404).body(apiErrorResponse);
     }
 
-    @ExceptionHandler(ReRegistrationException.class)
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ResponseEntity<ApiErrorResponse> reRegistrationExceptionHandler(@NotNull ReRegistrationException exception) {
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ApiErrorResponse> chatNotFoundExceptionHandler(@NotNull MethodNotAllowedException exception) {
         var apiErrorResponse = new ApiErrorResponse(
-                "Repeated registration",
+                "Method not allowed",
                 "405",
-                "ReRegistrationException",
+                "MethodNotAllowedException",
                 exception.getMessage(),
-                null);
+                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
         return ResponseEntity.status(405).body(apiErrorResponse);
     }
+
 
     @ExceptionHandler(ReAddingALinkException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
