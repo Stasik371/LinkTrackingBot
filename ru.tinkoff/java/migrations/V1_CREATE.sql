@@ -1,13 +1,18 @@
-CREATE TABLE chat
+create sequence if not exists chat_pk_sequence;
+create table chat
 (
-    chat_id_pk       SERIAL PRIMARY KEY NOT NULL,
-    telegram_chat_id INTEGER            NOT NULL
+    chat_id_pk       bigint primary key not null default nextval('chat_pk_sequence'),
+    telegram_chat_id bigint             not null
 );
 
-CREATE TABLE link
+alter sequence chat_pk_sequence owned by chat.chat_id_pk;
+
+create sequence if not exists link_pk_sequence;
+
+create table link
 (
-    link_id_pk      SERIAL PRIMARY KEY                                                       NOT NULL,
-    chat_id         INTEGER REFERENCES chat (chat_id_pk) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-    uri             VARCHAR(512)                                                             NOT NULL,
-    last_checked_at TIME DEFAULT CURRENT_TIME
+    link_id_pk      bigint primary key                                                      not null default nextval('link_pk_sequence'),
+    chat_id         bigint references chat (telegram_chat_id) on update cascade on delete cascade not null,
+    uri             text                                                                    not null,
+    last_checked_at timestamp                                                               not null
 );

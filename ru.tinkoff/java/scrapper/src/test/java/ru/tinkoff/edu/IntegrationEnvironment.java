@@ -1,4 +1,4 @@
-package integration;
+package ru.tinkoff.edu;
 
 import liquibase.Contexts;
 import liquibase.LabelExpression;
@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-abstract class IntegrationEnvironment {
+public abstract class IntegrationEnvironment {
     protected static final PostgreSQLContainer POSTGRE_SQL_CONTAINER;
 
     private static final String CHANGELOG_PATH = "master.xml";
