@@ -1,11 +1,11 @@
-package ru.tinkoff.edu.java.scrapper.webclients.implementations;
+package ru.tinkoff.edu.java.scrapper.webclients.outside.implementations;
 
 import jakarta.validation.constraints.NotNull;
 
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.tinkoff.edu.java.scrapper.webclients.dto.StackOverFlowResponse;
-import ru.tinkoff.edu.java.scrapper.webclients.builders.StackOverFlowWebClientBuilder;
-import ru.tinkoff.edu.java.scrapper.webclients.interfaces.StackOverFlowClient;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.dto.StackOverFlowResponse;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.builders.StackOverFlowWebClientBuilder;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.interfaces.StackOverFlowClient;
 
 import java.util.List;
 

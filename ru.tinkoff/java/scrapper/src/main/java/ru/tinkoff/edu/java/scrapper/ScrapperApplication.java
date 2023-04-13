@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import ru.tinkoff.edu.java.scrapper.configuration.ApplicationConfig;
 import ru.tinkoff.edu.java.scrapper.configuration.ClientConfiguration;
-import ru.tinkoff.edu.java.scrapper.webclients.implementations.GitHubClientBaseImpl;
-import ru.tinkoff.edu.java.scrapper.webclients.implementations.StackOverFlowClientBaseImpl;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.implementations.GitHubClientBaseImpl;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.implementations.StackOverFlowClientBaseImpl;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationConfig.class, ClientConfiguration.class})

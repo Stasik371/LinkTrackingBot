@@ -1,11 +1,12 @@
-package ru.tinkoff.edu.java.scrapper.webclients.builders;
+package ru.tinkoff.edu.java.scrapper.webclients.outside.builders;
 
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.web.reactive.function.client.WebClient;
+import ru.tinkoff.edu.java.scrapper.webclients.WebClientBuilder;
 
-public class StackOverFlowWebClientBuilder implements WebClientBuilder {
-    @Value("${client.stackOverFlowApiBaseUrl}")
+
+public class GitHubWebClientBuilder implements WebClientBuilder {
+    @Value("${client.gitHubBaseUrl}")
     private String baseUrlFromProperties;
 
 
@@ -15,9 +16,8 @@ public class StackOverFlowWebClientBuilder implements WebClientBuilder {
         if (baseUrl == null || baseUrl.isEmpty()) webClient = WebClient.builder().baseUrl(baseUrlFromProperties);
         else webClient = WebClient.builder().baseUrl(baseUrl);
         return webClient
-                .defaultHeader("Accept", "application/json")
-                .defaultHeader("Accept-Encoding", "gzip")
+                .defaultHeader("Accept", "application/vnd.github+json")
+                .defaultHeader("X-GitHub-Api-Version", "2022-11-28")
                 .build();
     }
-
 }

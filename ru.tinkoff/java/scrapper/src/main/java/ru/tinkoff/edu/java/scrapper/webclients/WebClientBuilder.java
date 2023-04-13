@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.webclients.builders;
+package ru.tinkoff.edu.java.scrapper.webclients;
 
 import org.springframework.web.reactive.function.client.WebClient;
 

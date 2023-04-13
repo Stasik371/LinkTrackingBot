@@ -1,10 +1,10 @@
-package ru.tinkoff.edu.java.scrapper.webclients.implementations;
+package ru.tinkoff.edu.java.scrapper.webclients.outside.implementations;
 
 
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.tinkoff.edu.java.scrapper.webclients.dto.GitHubResponse;
-import ru.tinkoff.edu.java.scrapper.webclients.builders.GitHubWebClientBuilder;
-import ru.tinkoff.edu.java.scrapper.webclients.interfaces.GitHubClient;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.builders.GitHubWebClientBuilder;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.dto.GitHubResponse;
+import ru.tinkoff.edu.java.scrapper.webclients.outside.interfaces.GitHubClient;
 
 
 public class GitHubClientBaseImpl implements GitHubClient {
