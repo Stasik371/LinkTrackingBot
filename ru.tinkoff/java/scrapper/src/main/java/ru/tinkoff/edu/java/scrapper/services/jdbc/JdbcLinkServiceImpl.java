@@ -18,9 +18,9 @@ import java.net.URI;
 @Service
 public class JdbcLinkServiceImpl implements LinkService {
 
-    private JdbcLinkRepository linkRepository;
+    private final JdbcLinkRepository linkRepository;
 
-    private JdbcTgChatRepository tgChatRepository;
+    private final JdbcTgChatRepository tgChatRepository;
 
     @Autowired
     public JdbcLinkServiceImpl(JdbcLinkRepository linkRepository, JdbcTgChatRepository tgChatRepository) {

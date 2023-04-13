@@ -1,21 +1,19 @@
 package ru.tinkoff.edu.java.scrapper.domain.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.TgChatMapper;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.TgChat;
-import ru.tinkoff.edu.java.scrapper.util.exceptions.ChatNotFoundException;
 
-import java.net.URI;
+
 import java.util.List;
 
 @Repository
 public class JdbcTgChatRepository {
-    private JdbcTemplate jdbcTemplate;
-    private TgChatMapper tgChatMapper;
+    private final JdbcTemplate jdbcTemplate;
+    private final TgChatMapper tgChatMapper;
 
     @Autowired
     public JdbcTgChatRepository(JdbcTemplate jdbcTemplate, TgChatMapper tgChatMapper) {
@@ -29,8 +27,8 @@ public class JdbcTgChatRepository {
     }
 
     @Transactional
-    public boolean delete(long tgChatId) {
-        return jdbcTemplate.update("delete from chat where telegram_chat_id = ?", tgChatId) > 0;
+    public void delete(long tgChatId) {
+        jdbcTemplate.update("delete from chat where telegram_chat_id = ?", tgChatId);
     }
 
     @Transactional

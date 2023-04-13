@@ -1,13 +1,11 @@
 package ru.tinkoff.edu.java.scrapper.domain.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.LinkMapper;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.Link;
-import ru.tinkoff.edu.java.scrapper.util.exceptions.LinkNotFoundException;
 
 import java.net.URI;
 import java.util.List;
