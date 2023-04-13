@@ -30,23 +30,24 @@ public class JdbcLinkServiceImpl implements LinkService {
 
     @Override
     public LinkResponse add(long tgChatId, URI url) {
-        if (tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
-        if (linkRepository.existsByURI(url)) throw new ReAddingALinkException("Link was added before");
+        if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
+        if (linkRepository.existsByURIAndTgChatId(url, tgChatId))
+            throw new ReAddingALinkException("Link was added before");
         var linkModel = linkRepository.add(new Link(tgChatId, url));
         return new LinkResponse(linkModel.tgChatId(), linkModel.uri().toString());
     }
 
     @Override
     public LinkResponse remove(long tgChatId, URI url) {
-        if (tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
-        if (!linkRepository.existsByURI(url)) throw new LinkNotFoundException("Link not found");
-        var uri = linkRepository.delete(url);
+        if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
+        if (!linkRepository.existsByURIAndTgChatId(url, tgChatId)) throw new LinkNotFoundException("Link not found");
+        var uri = linkRepository.delete(url, tgChatId);
         return new LinkResponse(tgChatId, uri.toString());
     }
 
     @Override
     public ListLinksResponse listAll(long tgChatId) {
-        if (tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
+        if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
         var links = linkRepository.readAll(tgChatId);
         if (links.size() < 1) throw new NoTrackedLinkException("");
         return new ListLinksResponse(links

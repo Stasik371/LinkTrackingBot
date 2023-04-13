@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.TgChatMapper;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.TgChat;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.ChatNotFoundException;
@@ -27,11 +28,12 @@ public class JdbcTgChatRepository {
         return jdbcTemplate.query("select * from chat", tgChatMapper);
     }
 
-
+    @Transactional
     public boolean delete(long tgChatId) {
         return jdbcTemplate.update("delete from chat where telegram_chat_id = ?", tgChatId) > 0;
     }
 
+    @Transactional
     public boolean add(long tgChatId) {
         return jdbcTemplate
                 .update("insert into chat(telegram_chat_id) values(?)",

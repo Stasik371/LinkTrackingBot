@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.controllers;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -8,10 +9,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.MethodNotAllowedException;
 import ru.tinkoff.edu.java.scrapper.controllers.dto.response.ApiErrorResponse;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.LinkNotFoundException;
+import ru.tinkoff.edu.java.scrapper.util.exceptions.NoTrackedLinkException;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.ReAddingALinkException;
 
 import java.util.Arrays;
@@ -30,13 +33,13 @@ public class ScrapperExceptionApiHandler {
         return ResponseEntity.status(400).body(apiErrorResponse);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(WebExchangeBindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> methodArgumentNotValidExceptionHandler(@NotNull MethodArgumentNotValidException exception) {
+    public ResponseEntity<ApiErrorResponse> webExchangeBindExceptionHandler(@NotNull WebExchangeBindException exception) {
         var apiErrorResponse = new ApiErrorResponse(
-                "Arguments are not valid",
+                "Link is not valid",
                 "400",
-                "MethodArgumentNotValidException",
+                "webExchangeBindExceptionException(Rejected url)",
                 exception.getMessage(),
                 Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
         return ResponseEntity.status(400).body(apiErrorResponse);
@@ -103,9 +106,32 @@ public class ScrapperExceptionApiHandler {
         return ResponseEntity.status(400).body(apiErrorResponse);
     }
 
+    @ExceptionHandler(DuplicateKeyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorResponse> reRegistrationExceptionHandler(@NotNull DuplicateKeyException exception) {
+        var apiErrorResponse = new ApiErrorResponse(
+                "Chat was registered before",
+                "400",
+                exception.getClass().toString(),
+                exception.getMessage(),
+                null);
+        return ResponseEntity.status(400).body(apiErrorResponse);
+    }
+    @ExceptionHandler(NoTrackedLinkException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorResponse> reRegistrationExceptionHandler(@NotNull NoTrackedLinkException exception) {
+        var apiErrorResponse = new ApiErrorResponse(
+                "No tracked links",
+                "400",
+                exception.getClass().toString(),
+                exception.getMessage(),
+                null);
+        return ResponseEntity.status(400).body(apiErrorResponse);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> unknownExceptionHandler(@NotNull Exception exception) {
+    public ResponseEntity<ApiErrorResponse> reRegestrationHandler(@NotNull Exception exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "Unknown exception, read stackTrace",
                 "400",
@@ -114,4 +140,5 @@ public class ScrapperExceptionApiHandler {
                 Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
         return ResponseEntity.status(400).body(apiErrorResponse);
     }
+
 }

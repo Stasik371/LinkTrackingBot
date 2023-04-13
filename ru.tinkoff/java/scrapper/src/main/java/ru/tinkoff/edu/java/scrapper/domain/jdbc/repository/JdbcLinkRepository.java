@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.LinkMapper;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.Link;
 import ru.tinkoff.edu.java.scrapper.util.exceptions.LinkNotFoundException;
@@ -24,18 +25,18 @@ public class JdbcLinkRepository {
         this.linkMapper = linkMapper;
     }
 
-
+    @Transactional
     public List<Link> readAll(long tgChatId) {
         return jdbcTemplate.query("select * from link where chat_id = ?", new Object[]{tgChatId}, linkMapper);
     }
 
-
-    public URI delete(URI uri) {
-        jdbcTemplate.update("delete from link where uri=?", uri.toString());
+    @Transactional
+    public URI delete(URI uri, long tgChatId) {
+        jdbcTemplate.update("delete from link where uri=? and chat_id = ?", uri.toString(), tgChatId);
         return uri;
     }
 
-
+    @Transactional
     public Link add(Link model) {
         jdbcTemplate
                 .update("insert into link (chat_id, uri, last_checked_at) values (?,?,?)",
@@ -46,18 +47,10 @@ public class JdbcLinkRepository {
         return model;
     }
 
-    public Link get(URI uri) {
-        try {
-            return jdbcTemplate
-                    .queryForObject("select * from link where uri = ?", linkMapper, uri.toString());
-        } catch (EmptyResultDataAccessException e) {
-            throw new LinkNotFoundException("Link not found");
-        }
-    }
-
-    public Boolean existsByURI(URI uri) {
+    @Transactional
+    public Boolean existsByURIAndTgChatId(URI uri, long tgChatId) {
         return jdbcTemplate
-                .queryForObject("select exists(select 1 from link where uri = ?)", Boolean.class, uri.toString());
+                .queryForObject("select exists(select 1 from link where uri = ? and chat_id=?)", Boolean.class, uri.toString(), tgChatId);
     }
 
 }

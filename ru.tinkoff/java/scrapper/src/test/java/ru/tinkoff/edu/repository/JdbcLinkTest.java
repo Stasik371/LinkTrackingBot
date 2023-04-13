@@ -82,7 +82,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Test
     @DisplayName("Delete operation test")
     public void removeTest() {
-        jdbcLinkRepository.delete(URI.create("https://github.com/Stasik371/TinkoffBot"));
+        jdbcLinkRepository.delete(URI.create("https://github.com/Stasik371/TinkoffBot"), 1);
         assertThat(urls.size() - 1, equalTo(jdbcTemplate.queryForObject("select count(*) from link", Integer.class)));
         assertThat(urls.get(1), equalTo(jdbcTemplate.queryForObject("select uri from link", String.class)));
     }
