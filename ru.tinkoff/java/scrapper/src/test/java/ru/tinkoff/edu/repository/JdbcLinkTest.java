@@ -22,6 +22,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -35,6 +36,8 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Autowired
     private LinkMapper linkMapper;
 
+    private final int tgChatId = (int) (Math.random() * 100);
+
 
     private final List<String> urls = List.of("https://github.com/Stasik371/TinkoffBot",
             "https://github.com/Stasik371/BookingApplication");
@@ -42,10 +45,10 @@ public class JdbcLinkTest extends IntegrationEnvironment {
 
     @BeforeEach
     public void createRecords() {
-        jdbcTemplate.update("insert into chat(telegram_chat_id) values (?)", 1);
+        jdbcTemplate.update("insert into chat(telegram_chat_id) values (?)", tgChatId);
         for (var url : urls) {
             jdbcTemplate.update("insert into link(chat_id, uri, last_checked_at) values (?, ?, ?)",
-                    1, url, OffsetDateTime.now());
+                    tgChatId, url, OffsetDateTime.now());
         }
     }
 
@@ -55,7 +58,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Rollback
     @DisplayName("Find all operation test")
     public void findAllTest() {
-        List<Link> allLinks = jdbcLinkRepository.readAll(1);
+        List<Link> allLinks = jdbcLinkRepository.readAllWithTgChatId(tgChatId);
         assertThat(urls.size(), equalTo(allLinks.size()));
         var i = 0;
         for (var url : urls) {

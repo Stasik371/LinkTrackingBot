@@ -2,6 +2,7 @@ package ru.tinkoff.edu.java.scrapper.webclients.outside.implementations;
 
 
 import org.springframework.web.reactive.function.client.WebClient;
+import ru.tinkoff.edu.java.linkparser.records.GithubRecord;
 import ru.tinkoff.edu.java.scrapper.webclients.outside.builders.GitHubWebClientBuilder;
 import ru.tinkoff.edu.java.scrapper.webclients.outside.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.webclients.outside.interfaces.GitHubClient;
@@ -20,9 +21,9 @@ public class GitHubClientBaseImpl implements GitHubClient {
     }
 
     @Override
-    public GitHubResponse fetchRepositoryInfo(String user, String repository) {
+    public GitHubResponse fetchRepositoryInfo(GithubRecord githubRecord) {
         return client.get()
-                .uri("/repos/{user}/{repo}", user, repository)
+                .uri("/repos/{user}/{repo}", githubRecord.user(), githubRecord.repository())
                 .retrieve()
                 .bodyToMono(GitHubResponse.class)
                 .block();

@@ -8,6 +8,7 @@ import ru.tinkoff.edu.java.scrapper.domain.jdbc.mappers.TgChatMapper;
 import ru.tinkoff.edu.java.scrapper.domain.jdbc.model.TgChat;
 
 
+import java.net.URI;
 import java.util.List;
 
 @Repository
@@ -38,9 +39,14 @@ public class JdbcTgChatRepository {
                         tgChatId) > 0;
     }
 
-
+    @Transactional
     public Boolean existsById(long id) {
         return jdbcTemplate
                 .queryForObject("select exists(select 1 from chat where telegram_chat_id = ?)", Boolean.class, id);
+    }
+
+    @Transactional
+    public List<TgChat> readAllByURI(URI uri) {
+        return jdbcTemplate.query("select * from chat where telegram_chat_id = ? ", new Object[]{uri.toString()}, tgChatMapper);
     }
 }

@@ -1,10 +1,11 @@
 package ru.tinkoff.edu.java.scrapper.webclients.internal.interfaces;
 
 
+import org.springframework.http.HttpStatus;
 import ru.tinkoff.edu.java.scrapper.webclients.internal.dto.LinkUpdate;
 
 public interface BotClient {
 
 
-    LinkUpdate sendUpdates(LinkUpdate linkUpdate);
+    HttpStatus sendUpdates(LinkUpdate linkUpdate);
 }

@@ -48,7 +48,7 @@ public class JdbcLinkServiceImpl implements LinkService {
     @Override
     public ListLinksResponse listAll(long tgChatId) {
         if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
-        var links = linkRepository.readAll(tgChatId);
+        var links = linkRepository.readAllWithTgChatId(tgChatId);
         if (links.size() < 1) throw new NoTrackedLinkException("");
         return new ListLinksResponse(links
                 .stream()

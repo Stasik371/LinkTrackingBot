@@ -14,5 +14,9 @@ create table link
     link_id_pk      bigint primary key                                                            not null default nextval('link_pk_sequence'),
     chat_id         bigint references chat (telegram_chat_id) on update cascade on delete cascade not null,
     uri             text                                                                          not null,
-    last_checked_at timestamp                                                                     not null
+    last_checked_at timestamp                                                                     not null,
+    last_activity_at  timestamp,
+    issue_count     integer,
+    answer_count    integer
+
 );

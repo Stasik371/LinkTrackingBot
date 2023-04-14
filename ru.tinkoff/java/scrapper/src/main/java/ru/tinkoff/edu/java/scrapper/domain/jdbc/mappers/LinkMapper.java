@@ -19,6 +19,9 @@ public class LinkMapper implements RowMapper<Link> {
         return new Link(rs.getLong("link_id_pk"),
                 rs.getLong("chat_id"),
                 URI.create(rs.getString("uri")),
-                rs.getObject("last_checked_at", OffsetDateTime.class));
+                rs.getObject("last_checked_at", OffsetDateTime.class),
+                rs.getObject("last_activity_at", OffsetDateTime.class),
+                rs.getInt("issue_count"),
+                rs.getInt("answer_count"));
     }
 }

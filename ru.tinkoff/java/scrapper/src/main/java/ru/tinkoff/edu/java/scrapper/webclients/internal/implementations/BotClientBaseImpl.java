@@ -2,6 +2,7 @@ package ru.tinkoff.edu.java.scrapper.webclients.internal.implementations;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.tinkoff.edu.java.scrapper.webclients.internal.builders.BotClientBuilder;
@@ -23,11 +24,11 @@ public class BotClientBaseImpl implements BotClient {
     }
 
     @Override
-    public LinkUpdate sendUpdates(LinkUpdate linkUpdate) {
+    public HttpStatus sendUpdates(LinkUpdate linkUpdate) {
         return client.post()
                 .uri("/updates")
                 .retrieve()
-                .bodyToMono(LinkUpdate.class)
+                .bodyToMono(HttpStatus.class)
                 .block();
     }
 }
