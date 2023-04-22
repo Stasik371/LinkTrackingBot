@@ -2,8 +2,6 @@ package ru.tinkoff.edu.java.domain.jpa.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.domain.LinkRepository;
 import ru.tinkoff.edu.java.domain.jpa.Entity.LinkEntity;
 import ru.tinkoff.edu.java.domain.jpa.generatedRepository.LinkEntityJPARepository;
@@ -17,8 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@Repository
-@Primary
+
 public class JPALinkRepository implements LinkRepository {
 
     private final LinkEntityJPARepository linkEntityJPARepository;

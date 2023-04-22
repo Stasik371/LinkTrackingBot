@@ -2,7 +2,6 @@ package ru.tinkoff.edu.java.domain.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.domain.TgChatRepository;
 import ru.tinkoff.edu.java.domain.jdbc.mappers.TgChatMapper;
@@ -11,7 +10,7 @@ import ru.tinkoff.edu.java.domain.model.TgChatModel;
 
 import java.util.List;
 
-@Repository
+
 public class JdbcTgChatRepository implements TgChatRepository {
     private final JdbcTemplate jdbcTemplate;
     private final TgChatMapper tgChatMapper;

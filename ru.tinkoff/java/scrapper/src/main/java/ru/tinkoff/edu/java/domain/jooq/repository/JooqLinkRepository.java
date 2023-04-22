@@ -15,8 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-/*@Repository
-@Primary*/
+
 public class JooqLinkRepository implements LinkRepository {
 
     private final DSLContext context;
