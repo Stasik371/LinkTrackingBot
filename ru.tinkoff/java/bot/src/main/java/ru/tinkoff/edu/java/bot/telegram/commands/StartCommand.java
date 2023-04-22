@@ -4,19 +4,20 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.bot.webclients.interfaces.TGChatClient;
+import ru.tinkoff.edu.java.bot.webclients.dto.link.response.ApiErrorResponse;
+import ru.tinkoff.edu.java.bot.webclients.interfaces.ScrapperClient;
 
 @Component
 public class StartCommand implements Command {
-    private final TGChatClient tgChatClient;
-    private String COMMAND = "/start";
-    private String DESCRIPTION = COMMAND + " -> запуск/перезапуск бота.";
+    private final ScrapperClient scrapperClient;
+    private final String COMMAND = "/start";
+    private final String DESCRIPTION = COMMAND + " -> запуск/перезапуск бота.";
 
-    private String ANSWER = "Привет! Чтобы получить список доступных комманд используйте /help";
+    private final String ANSWER = "Привет! Чтобы получить список доступных комманд используйте /help";
 
     @Autowired
-    public StartCommand(TGChatClient tgChatClient) {
-        this.tgChatClient = tgChatClient;
+    public StartCommand(ScrapperClient scrapperClient) {
+        this.scrapperClient = scrapperClient;
     }
 
     @Override
@@ -31,7 +32,11 @@ public class StartCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        tgChatClient.registerChat(update.message().chat().id());
-        return new SendMessage(update.message().chat().id(), ANSWER);
+        try {
+            scrapperClient.registerChat(update.message().chat().id());
+            return new SendMessage(update.message().chat().id(), ANSWER);
+        } catch (ApiErrorResponse errorResponse) {
+            return new SendMessage(update.message().chat().id(), errorResponse.getDescription());
+        }
     }
 }

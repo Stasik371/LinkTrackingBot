@@ -2,10 +2,11 @@ package ru.tinkoff.edu.java.webclients.internal.implementations;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.tinkoff.edu.java.webclients.internal.builders.BotClientBuilder;
+import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.webclients.internal.dto.LinkUpdate;
 import ru.tinkoff.edu.java.webclients.internal.interfaces.BotClient;
 
@@ -13,20 +14,31 @@ import ru.tinkoff.edu.java.webclients.internal.interfaces.BotClient;
 @Getter
 @Setter
 public class BotClientBaseImpl implements BotClient {
-    private final WebClient client;
+    private final WebClient webClient;
+
+    @Value("${client.botBaseUrl}")
+    private String baseUrl;
 
     public BotClientBaseImpl() {
-        client = new BotClientBuilder().build(null);
+        webClient = WebClient
+                .builder()
+                .baseUrl(baseUrl)
+                .build();
+
     }
 
-    public BotClientBaseImpl(String baseUrl) {
-        client = new BotClientBuilder().build(baseUrl);
+    public BotClientBaseImpl(String url) {
+        webClient = WebClient
+                .builder()
+                .baseUrl(url)
+                .build();
     }
 
     @Override
     public HttpStatus sendUpdates(LinkUpdate linkUpdate) {
-        return client.post()
+        return webClient.post()
                 .uri("/updates")
+                .body(Mono.just(linkUpdate), LinkUpdate.class)
                 .retrieve()
                 .bodyToMono(HttpStatus.class)
                 .block();

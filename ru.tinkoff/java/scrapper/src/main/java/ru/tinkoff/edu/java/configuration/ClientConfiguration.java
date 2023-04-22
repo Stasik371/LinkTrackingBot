@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.configuration;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.validation.annotation.Validated;
 import ru.tinkoff.edu.java.webclients.internal.implementations.BotClientBaseImpl;
 import ru.tinkoff.edu.java.webclients.internal.interfaces.BotClient;
 import ru.tinkoff.edu.java.webclients.outside.implementations.GitHubClientBaseImpl;
@@ -11,7 +10,7 @@ import ru.tinkoff.edu.java.webclients.outside.implementations.StackOverFlowClien
 import ru.tinkoff.edu.java.webclients.outside.interfaces.GitHubClient;
 import ru.tinkoff.edu.java.webclients.outside.interfaces.StackOverFlowClient;
 
-@Validated
+
 @ConfigurationProperties(prefix = "client", ignoreUnknownFields = false)
 public record ClientConfiguration(String gitHubBaseUrl, String stackOverFlowBaseUrl, String botBaseUrl) {
     @Bean

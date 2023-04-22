@@ -15,7 +15,7 @@ import ru.tinkoff.edu.java.bot.telegram.MessageProcessor.UserManagerProcessorImp
 import ru.tinkoff.edu.java.bot.telegram.commands.ListCommand;
 import ru.tinkoff.edu.java.bot.webclients.dto.link.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.webclients.dto.link.response.ListLinksResponse;
-import ru.tinkoff.edu.java.bot.webclients.implementations.LinksClientImpl;
+import ru.tinkoff.edu.java.bot.webclients.implementations.ScrapperClientImpls;
 
 
 import java.net.URI;
@@ -30,11 +30,11 @@ import static org.mockito.Mockito.when;
 public class ListTests {
 
     @Mock
-    private LinksClientImpl client = Mockito.mock(LinksClientImpl.class);
+    private ScrapperClientImpls client = Mockito.mock(ScrapperClientImpls.class);
     @InjectMocks
     private ListCommand listCommand = new ListCommand(client);
     @InjectMocks
-    private UserManagerProcessorImpl messageProcessor = new UserManagerProcessorImpl(listCommand);
+    private UserManagerProcessorImpl messageProcessor = new UserManagerProcessorImpl(client, listCommand);
 
 
     @Test
@@ -62,10 +62,6 @@ public class ListTests {
         updateMessageField.setAccessible(true);
         updateMessageField.set(update, message);
 
-
-        var lastCommandField = UserManagerProcessorImpl.class.getDeclaredField("lastCommand");
-        lastCommandField.setAccessible(true);
-        lastCommandField.set(messageProcessor, "/foo");
 
         SendMessage messageFromListCommand = messageProcessor.process(update);
         assertThat(chatId, equalTo(messageFromListCommand.getParameters().get("chat_id")));
