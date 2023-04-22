@@ -9,7 +9,7 @@ import ru.tinkoff.edu.java.domain.jooq.generated.tables.Chat;
 import ru.tinkoff.edu.java.domain.jooq.generated.tables.Link;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
 
-import java.net.URI;
+
 import java.util.List;
 
 @Repository
@@ -23,7 +23,6 @@ public class JooqTgChatRepository implements TgChatRepository {
 
     private final Chat chat = Chat.CHAT;
 
-    private final Link link = Link.LINK;
 
     @Override
     @Transactional
@@ -60,15 +59,5 @@ public class JooqTgChatRepository implements TgChatRepository {
                         .where(chat.TELEGRAM_CHAT_ID.eq(id)));
     }
 
-    @Override
-    public List<TgChatModel> readAllByURI(URI uri) {
-        return context.select()
-                .from(link)
-                .where(link.URI.eq(uri.toString()))
-                .stream()
-                .map(record -> new TgChatModel(
-                        record.getValue(chat.CHAT_ID_PK),
-                        record.getValue(chat.TELEGRAM_CHAT_ID)))
-                .toList();
-    }
+
 }

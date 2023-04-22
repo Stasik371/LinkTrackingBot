@@ -3,10 +3,8 @@ package ru.tinkoff.edu.java.domain.jooq.repository;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.domain.LinkRepository;
-import ru.tinkoff.edu.java.domain.jooq.generated.tables.Chat;
 import ru.tinkoff.edu.java.domain.jooq.generated.tables.Link;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
@@ -17,7 +15,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@Repository
+/*@Repository
+@Primary*/
 public class JooqLinkRepository implements LinkRepository {
 
     private final DSLContext context;
@@ -29,9 +28,8 @@ public class JooqLinkRepository implements LinkRepository {
         this.context = context;
     }
 
-    private Chat chat = Chat.CHAT;
 
-    private Link link = Link.LINK;
+    private final Link link = Link.LINK;
 
     @Override
     public List<LinkModel> readAllToUpdate() {
@@ -128,5 +126,16 @@ public class JooqLinkRepository implements LinkRepository {
                 .set(this.link.ANSWER_COUNT, link.answerCount())
                 .where(this.link.LINK_ID_PK.eq(link.id()))
                 .execute();
+    }
+
+    @Transactional
+    public List<TgChatModel> readAllByURI(URI uri) {
+        return context
+                .select()
+                .from(link)
+                .where(link.URI.eq(uri.toString()))
+                .stream()
+                .map(l -> new TgChatModel(l.getValue(link.CHAT_ID)))
+                .toList();
     }
 }

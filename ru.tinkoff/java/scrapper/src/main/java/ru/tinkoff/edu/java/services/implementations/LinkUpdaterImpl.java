@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.services.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.domain.LinkRepository;
-import ru.tinkoff.edu.java.domain.TgChatRepository;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
 import ru.tinkoff.edu.java.webclients.internal.dto.LinkUpdate;
@@ -20,25 +19,21 @@ import java.time.OffsetDateTime;
 @Service
 public class LinkUpdaterImpl implements LinkUpdater {
 
-
     private final LinkRepository linkRepository;
     private final BotClient botClient;
 
     private final GitHubClient gitHubClient;
     private final StackOverFlowClient stackOverFlowClient;
 
-    private final TgChatRepository chatRepository;
 
 
     @Autowired
     public LinkUpdaterImpl(LinkRepository linkRepository, BotClient botClient,
-                           GitHubClient gitHubClient, StackOverFlowClient stackOverFlowClient,
-                           TgChatRepository chatRepository) {
+                           GitHubClient gitHubClient, StackOverFlowClient stackOverFlowClient) {
         this.linkRepository = linkRepository;
         this.botClient = botClient;
         this.gitHubClient = gitHubClient;
         this.stackOverFlowClient = stackOverFlowClient;
-        this.chatRepository = chatRepository;
     }
 
 
@@ -69,7 +64,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
                 if (!response.answerCount().equals(link.answerCount())) {
                     answerCount = response.answerCount();
                     sendUpdates(link, "LinkModel " + link.uri() + " has new questions.");
-                } else if (!response.lastActivityDate().isAfter(link.lastActivity())) {
+                } else if (response.lastActivityDate().isAfter(link.lastActivity())) {
                     lastActivity = response.lastActivityDate();
                     sendUpdates(link, "LinkModel " + link.uri() + " has new updates.");
                 }
@@ -84,7 +79,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
         botClient.sendUpdates(new LinkUpdate(link.id(),
                 link.uri().toString(),
                 message,
-                chatRepository
+                linkRepository
                         .readAllByURI(link.uri())
                         .stream()
                         .map(TgChatModel::tgChatId).mapToLong(val -> val)

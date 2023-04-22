@@ -18,7 +18,7 @@ import java.net.URI;
 @RequestMapping("/links")
 public class LinksController {
 
-    private LinkService linkServiceImpl;
+    private final LinkService linkServiceImpl;
 
     @Autowired
     public LinksController(LinkService linkServiceImpl) {
@@ -34,7 +34,9 @@ public class LinksController {
     @PostMapping
     public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") long tgChatId,
                                                 @RequestBody @Valid AddLinkRequest linkRequest) {
-        return new ResponseEntity<>(linkServiceImpl.add(tgChatId, URI.create(linkRequest.link())), HttpStatus.OK);
+
+        var link = linkServiceImpl.add(tgChatId, URI.create(linkRequest.link()));
+        return new ResponseEntity<>(new LinkResponse(link.id(), link.url()), HttpStatus.OK);
     }
 
     @DeleteMapping

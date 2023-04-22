@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.domain.LinkRepository;
 import ru.tinkoff.edu.java.domain.jdbc.mappers.LinkMapper;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
+import ru.tinkoff.edu.java.domain.model.TgChatModel;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -18,7 +19,6 @@ import java.util.List;
 
 
 @Repository
-@Primary
 public class JdbcLinkRepository implements LinkRepository {
 
     @Value("${minutesToCheck}")
@@ -63,7 +63,7 @@ public class JdbcLinkRepository implements LinkRepository {
         return uri;
     }
 
-    @Transactional
+
     @Override
     public LinkModel add(LinkModel model) {
         jdbcTemplate
@@ -85,12 +85,21 @@ public class JdbcLinkRepository implements LinkRepository {
                 .queryForObject("select exists(select 1 from link where uri = ? and chat_id=?)", Boolean.class, uri.toString(), tgChatId);
     }
 
-    @Transactional
+
     @Override
     public void update(LinkModel link) {
         jdbcTemplate.update("update link set last_checked_at=?, last_activity_at=?, " +
                         "issue_count=?, answer_count=? where link_id_pk = ?",
                 link.lastCheckedAt(), link.lastActivity(), link.issueCount(), link.answerCount(), link.id());
+    }
+
+    @Transactional
+    @Override
+    public List<TgChatModel> readAllByURI(URI uri) {
+        return jdbcTemplate.query("select * from link where uri = ?", new Object[]{uri.toString()}, linkMapper)
+                .stream()
+                .map(l -> new TgChatModel(l.tgChatId()))
+                .toList();
     }
 
 }
