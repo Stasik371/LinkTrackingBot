@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.repository;
+package ru.tinkoff.edu.repository.jdbc;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.IntegrationEnvironment;
+import ru.tinkoff.edu.repository.IntegrationEnvironment;
 import ru.tinkoff.edu.java.domain.jdbc.mappers.TgChatMapper;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
 import ru.tinkoff.edu.java.domain.jdbc.repository.JdbcTgChatRepository;
@@ -25,7 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
-public class JdbcTgChatModelTest extends IntegrationEnvironment {
+public class JdbcTgChatTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -77,9 +77,9 @@ public class JdbcTgChatModelTest extends IntegrationEnvironment {
     @DisplayName("Delete operation test")
     public void removeTest() {
         jdbcTgchatRepository.delete(123L);
-        assertThat(chatsId.size()-1,equalTo(jdbcTemplate
+        assertThat(chatsId.size() - 1, equalTo(jdbcTemplate
                 .queryForObject("select count(*) from chat", Integer.class)));
-        assertThat(chatsId.get(1),equalTo(jdbcTemplate
+        assertThat(chatsId.get(1), equalTo(jdbcTemplate
                 .queryForObject("select telegram_chat_id from chat", Long.class)));
 
     }

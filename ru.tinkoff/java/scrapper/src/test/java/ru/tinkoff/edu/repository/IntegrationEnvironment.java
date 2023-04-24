@@ -1,11 +1,9 @@
-package ru.tinkoff.edu;
+package ru.tinkoff.edu.repository;
 
 import liquibase.Contexts;
 import liquibase.LabelExpression;
-import liquibase.Liquibase;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.DirectoryResourceAccessor;
 import org.testcontainers.containers.PostgreSQLContainer;

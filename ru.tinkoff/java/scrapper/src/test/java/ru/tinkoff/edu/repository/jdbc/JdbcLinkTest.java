@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.repository;
+package ru.tinkoff.edu.repository.jdbc;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.IntegrationEnvironment;
+import ru.tinkoff.edu.repository.IntegrationEnvironment;
 
 import ru.tinkoff.edu.java.domain.jdbc.mappers.LinkMapper;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
@@ -27,7 +27,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
-public class JdbcLinkTestModel extends IntegrationEnvironment {
+public class JdbcLinkTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -73,7 +73,7 @@ public class JdbcLinkTestModel extends IntegrationEnvironment {
     @DisplayName("Create operation test")
     public void addTest() {
         var newUrl = URI.create("https://github.com/Stasik371/VkCoursesHW2");
-        LinkModel link = new LinkModel(1, newUrl);
+        LinkModel link = new LinkModel(tgChatId, newUrl);
         jdbcLinkRepository.add(link);
         List<LinkModel> all = jdbcTemplate.query("select * from link", linkMapper);
         assertThat(urls.size() + 1, equalTo(all.size()));
@@ -85,7 +85,7 @@ public class JdbcLinkTestModel extends IntegrationEnvironment {
     @Test
     @DisplayName("Delete operation test")
     public void removeTest() {
-        jdbcLinkRepository.delete(URI.create("https://github.com/Stasik371/TinkoffBot"), 1);
+        jdbcLinkRepository.delete(URI.create("https://github.com/Stasik371/TinkoffBot"), tgChatId);
         assertThat(urls.size() - 1, equalTo(jdbcTemplate.queryForObject("select count(*) from link", Integer.class)));
         assertThat(urls.get(1), equalTo(jdbcTemplate.queryForObject("select uri from link", String.class)));
     }
