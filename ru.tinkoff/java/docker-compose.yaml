@@ -20,7 +20,7 @@ services:
     image: liquibase/liquibase:4.18
     restart: on-failure
     depends_on:
-      - postgres
+      - postgresql
     command:
       - --hub-mode=off
       - --changelog-file=master.xml
@@ -33,6 +33,19 @@ services:
       - ./migrations:/liquibase/changelog
     networks:
       - backend
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    restart: always
+    hostname: rabbitmq
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+    networks:
+      - backend
+
 
 networks:
   backend:
