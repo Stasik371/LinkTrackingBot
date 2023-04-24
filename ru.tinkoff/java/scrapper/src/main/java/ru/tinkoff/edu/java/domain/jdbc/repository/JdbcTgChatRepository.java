@@ -26,18 +26,18 @@ public class JdbcTgChatRepository implements TgChatRepository {
         return jdbcTemplate.query("select * from chat", tgChatMapper);
     }
 
-    @Transactional
+
     public void delete(long tgChatId) {
         jdbcTemplate.update("delete from chat where telegram_chat_id = ?", tgChatId);
     }
 
-    @Transactional
+
     public void add(long tgChatId) {
         jdbcTemplate.update("insert into chat(telegram_chat_id) values(?)",
                 tgChatId);
     }
 
-    @Transactional
+
     public Boolean existsById(long id) {
         return jdbcTemplate
                 .queryForObject("select exists(select 1 from chat where telegram_chat_id = ?)", Boolean.class, id);

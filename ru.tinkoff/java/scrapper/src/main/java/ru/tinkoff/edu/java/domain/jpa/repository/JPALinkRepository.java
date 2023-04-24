@@ -10,9 +10,8 @@ import ru.tinkoff.edu.java.domain.model.TgChatModel;
 import ru.tinkoff.edu.java.util.exceptions.NoTrackedLinkException;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -30,12 +29,8 @@ public class JPALinkRepository implements LinkRepository {
 
     @Override
     public List<LinkModel> readAllToUpdate() {
-        return readAll()
-                .stream()
-                .filter(l -> l
-                        .lastCheckedAt()
-                        .isBefore(OffsetDateTime.of(LocalDateTime.now().minusMinutes(minutesToCheck), ZoneOffset.UTC)))
-                .toList();
+        return mapFromEntityToModel(linkEntityJPARepository
+                .findByLastCheckedAtBefore(OffsetDateTime.now().minus(minutesToCheck, ChronoUnit.MINUTES)));
     }
 
     @Override

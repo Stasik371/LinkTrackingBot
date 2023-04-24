@@ -2,6 +2,7 @@ package ru.tinkoff.edu.java.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.controllers.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.controllers.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.domain.LinkRepository;
@@ -33,6 +34,7 @@ public class LinkServiceImpl implements LinkService {
 
 
     @Override
+    @Transactional
     public LinkResponse add(long tgChatId, URI url) {
         if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
         if (linkRepository.existsByURIAndTgChatId(url, tgChatId))
@@ -50,6 +52,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    @Transactional
     public LinkResponse remove(long tgChatId, URI url) {
         if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
         if (!linkRepository.existsByURIAndTgChatId(url, tgChatId))
@@ -59,6 +62,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    @Transactional
     public ListLinksResponse listAll(long tgChatId) {
         if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
         var links = linkRepository.readAllWithTgChatId(tgChatId);

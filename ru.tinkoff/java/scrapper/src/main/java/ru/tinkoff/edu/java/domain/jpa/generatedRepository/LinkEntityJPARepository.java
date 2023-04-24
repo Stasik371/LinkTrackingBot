@@ -36,4 +36,8 @@ public interface LinkEntityJPARepository extends JpaRepository<LinkEntity, Long>
                  @Param("last_activity_at") OffsetDateTime lastActivityAt,
                  @Param("issue_count") Integer issueCount,
                  @Param("answer_count") Integer answerCount);
+
+
+    List<LinkEntity> findByLastCheckedAtBefore(OffsetDateTime cutoffTime);
+
 }

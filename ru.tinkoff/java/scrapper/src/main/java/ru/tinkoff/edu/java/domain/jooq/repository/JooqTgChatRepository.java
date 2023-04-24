@@ -2,7 +2,6 @@ package ru.tinkoff.edu.java.domain.jooq.repository;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.domain.TgChatRepository;
 import ru.tinkoff.edu.java.domain.jooq.generated.tables.Chat;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
@@ -23,7 +22,6 @@ public class JooqTgChatRepository implements TgChatRepository {
 
 
     @Override
-    @Transactional
     public List<TgChatModel> readAll() {
         return context
                 .select()
