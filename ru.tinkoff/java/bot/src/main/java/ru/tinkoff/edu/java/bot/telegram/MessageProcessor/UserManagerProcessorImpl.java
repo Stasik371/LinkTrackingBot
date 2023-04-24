@@ -41,9 +41,13 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
     @Override
     public SendMessage process(Update update) {
         for (var command : commands) {
-            if (command.command().equals(update.message().text())) {
-                lastCommand = command.command();
-                return command.handle(update);
+            try {
+                if (command.command().equals(update.message().text())) {
+                    lastCommand = command.command();
+                    return command.handle(update);
+                }
+            } catch (NullPointerException e){
+                e.printStackTrace();
             }
         }
         if (lastCommand.equals("/track")) {

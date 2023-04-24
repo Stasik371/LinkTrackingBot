@@ -20,7 +20,7 @@ services:
     image: liquibase/liquibase:4.18
     restart: on-failure
     depends_on:
-      - postgres
+      - postgresql
     command:
       - --hub-mode=off
       - --changelog-file=master.xml

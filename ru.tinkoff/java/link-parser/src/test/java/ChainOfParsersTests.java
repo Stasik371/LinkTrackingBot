@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.tinkoff.edu.java.linkparser.parsers.ChainOfParsers;
-import ru.tinkoff.edu.java.linkparser.records.GithubRecord;
-import ru.tinkoff.edu.java.linkparser.records.StackOverFlowRecord;
+import ru.tinkoff.edu.linkparser.parsers.ChainOfParsers;
+import ru.tinkoff.edu.linkparser.records.GithubRecord;
+import ru.tinkoff.edu.linkparser.records.StackOverFlowRecord;
 
 import java.net.URI;
 
