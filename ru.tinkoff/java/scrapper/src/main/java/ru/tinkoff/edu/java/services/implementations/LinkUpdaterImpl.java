@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.domain.LinkRepository;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
+import ru.tinkoff.edu.java.services.implementations.updatesenders.UpdateSender;
 import ru.tinkoff.edu.java.webclients.internal.dto.LinkUpdate;
-import ru.tinkoff.edu.java.webclients.internal.interfaces.BotClient;
 import ru.tinkoff.edu.java.webclients.outside.dto.GitHubResponse;
 import ru.tinkoff.edu.java.webclients.outside.dto.StackOverFlowResponse;
 import ru.tinkoff.edu.java.webclients.outside.interfaces.GitHubClient;
@@ -23,17 +23,18 @@ import java.time.OffsetDateTime;
 public class LinkUpdaterImpl implements LinkUpdater {
 
     private final LinkRepository linkRepository;
-    private final BotClient botClient;
+
+    private final UpdateSender updateSender;
 
     private final GitHubClient gitHubClient;
     private final StackOverFlowClient stackOverFlowClient;
 
 
     @Autowired
-    public LinkUpdaterImpl(LinkRepository linkRepository, BotClient botClient,
-                           GitHubClient gitHubClient, StackOverFlowClient stackOverFlowClient) {
+    public LinkUpdaterImpl(LinkRepository linkRepository, GitHubClient gitHubClient,
+                           UpdateSender updateSender, StackOverFlowClient stackOverFlowClient) {
         this.linkRepository = linkRepository;
-        this.botClient = botClient;
+        this.updateSender = updateSender;
         this.gitHubClient = gitHubClient;
         this.stackOverFlowClient = stackOverFlowClient;
     }
@@ -90,7 +91,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
     }
 
     private void sendUpdates(LinkModel link, String message) {
-        botClient.sendUpdates(new LinkUpdate(link.id(),
+        updateSender.sendUpdates(new LinkUpdate(link.id(),
                 link.uri().toString(),
                 message,
                 linkRepository

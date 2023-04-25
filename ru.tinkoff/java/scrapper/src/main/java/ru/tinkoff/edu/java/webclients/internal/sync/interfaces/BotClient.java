@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.webclients.internal.interfaces;
+package ru.tinkoff.edu.java.webclients.internal.sync.interfaces;
 
 
 import org.springframework.http.HttpStatus;

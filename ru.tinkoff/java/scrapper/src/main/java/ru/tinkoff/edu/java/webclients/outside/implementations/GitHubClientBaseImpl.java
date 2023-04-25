@@ -11,7 +11,7 @@ import java.time.Duration;
 
 
 public class GitHubClientBaseImpl implements GitHubClient {
-    @Value("${client.gitHubBaseUrl}")
+    @Value("${client.git-hub-base-url}")
     private String baseUrl;
 
     private final WebClient webClient;

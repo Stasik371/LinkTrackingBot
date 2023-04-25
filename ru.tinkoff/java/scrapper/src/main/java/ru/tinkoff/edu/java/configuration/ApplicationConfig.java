@@ -10,7 +10,8 @@ import ru.tinkoff.edu.java.util.scheduler.Scheduler;
 
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record ApplicationConfig(@NotNull Scheduler scheduler, @NotNull AccessType databaseAccessType,
-                                String exchangeName, String queueName, boolean useQueue, int minutesToCheck) {
+                                String exchangeName, String queueName, boolean useQueue, int minutesToCheck,
+                                String botBaseUrl) {
     @Bean
     public long schedulerIntervalInMs() {
         return scheduler.interval().toMillis();

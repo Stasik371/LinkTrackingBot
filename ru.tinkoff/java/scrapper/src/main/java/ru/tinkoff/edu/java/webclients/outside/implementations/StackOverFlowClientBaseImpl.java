@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class StackOverFlowClientBaseImpl implements StackOverFlowClient {
-    @Value("${client.stackOverFlowBaseUrl}")
+    @Value("${client.stack-over-flow-base-url}")
     private String baseUrl;
     private final WebClient webClient;
 
