@@ -17,7 +17,7 @@ import java.util.List;
 
 public class JdbcLinkRepository implements LinkRepository {
 
-    @Value("${minutesToCheck}")
+    @Value("${app.minutes-to-check}")
     private int minutesToCheck;
 
     private final JdbcTemplate jdbcTemplate;

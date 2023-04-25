@@ -19,7 +19,7 @@ import java.util.List;
 public class JooqLinkRepository implements LinkRepository {
 
     private final DSLContext context;
-    @Value("${minutesToCheck}")
+    @Value("${app.minutes-to-check}")
     private int minutesToCheck;
 
     @Autowired

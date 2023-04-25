@@ -44,7 +44,6 @@ public class JpaLinkTest extends IntegrationEnvironment {
     @BeforeEach
     public void createRecords() {
         jpaTgChatRepository.add(tgChatId);
-
         for (var url : urls) {
             jpaLinkRepository.add(new LinkModel(tgChatId, URI.create(url)));
         }

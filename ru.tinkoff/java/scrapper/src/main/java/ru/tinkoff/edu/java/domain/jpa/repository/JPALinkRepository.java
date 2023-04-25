@@ -19,7 +19,7 @@ public class JPALinkRepository implements LinkRepository {
 
     private final LinkEntityJPARepository linkEntityJPARepository;
 
-    @Value("${minutesToCheck}")
+    @Value("${app.minutes-to-check}")
     private int minutesToCheck;
 
     @Autowired
