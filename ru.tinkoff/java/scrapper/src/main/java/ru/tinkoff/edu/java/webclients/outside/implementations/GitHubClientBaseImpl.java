@@ -34,7 +34,6 @@ public class GitHubClientBaseImpl implements GitHubClient {
 
     @Override
     public GitHubResponse fetchRepositoryInfo(GithubRecord githubRecord) {
-        System.out.println(githubRecord.user() + githubRecord.repository());
         return webClient
                 .get()
                 .uri("/repos/{user}/{repo}", githubRecord.user(), githubRecord.repository())

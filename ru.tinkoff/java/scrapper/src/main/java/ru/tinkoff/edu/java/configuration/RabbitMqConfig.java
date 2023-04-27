@@ -25,12 +25,15 @@ public class RabbitMqConfig {
 
     @Bean
     public Queue queue() {
-        return new Queue(queueName, false);
+        return QueueBuilder
+                .nonDurable(queueName)
+                .withArgument("x-dead-letter-exchange", exchangeName + ".dlx")
+                .build();
     }
 
     @Bean
     public DirectExchange directExchange() {
-        return new DirectExchange(exchangeName);
+        return new DirectExchange(exchangeName, false, false);
     }
 
     @Bean

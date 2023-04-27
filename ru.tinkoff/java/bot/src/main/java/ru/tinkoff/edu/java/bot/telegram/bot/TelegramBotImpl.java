@@ -24,7 +24,8 @@ public class TelegramBotImpl implements Bot {
     private final UserManagerProcessor userManagerProcessor;
 
     @Autowired
-    public TelegramBotImpl(@Value("${bot.token}") String token, UserManagerProcessor userManagerProcessor) {
+    public TelegramBotImpl(@Value("${bot.token}") String token,
+                           UserManagerProcessor userManagerProcessor) {
         this.userManagerProcessor = userManagerProcessor;
         bot = new TelegramBot(token);
 
@@ -57,6 +58,7 @@ public class TelegramBotImpl implements Bot {
         bot.removeGetUpdatesListener();
     }
 
+    @Override
     public void sendUpdates(LinkUpdateRequest linkUpdateRequest) {
         for (var id : linkUpdateRequest.tgChatIds()) {
             bot.execute(new SendMessage(id, linkUpdateRequest.description()));

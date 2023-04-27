@@ -10,21 +10,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.bot.controllers.dto.LinkUpdateRequest;
-import ru.tinkoff.edu.java.bot.telegram.bot.TelegramBotImpl;
+import ru.tinkoff.edu.java.bot.update.senders.UpdateSender;
 
 @RestController
 public class BotController {
 
-    private final TelegramBotImpl bot;
+
+    private final UpdateSender updateSender;
 
     @Autowired
-    public BotController(TelegramBotImpl bot) {
-        this.bot = bot;
+    public BotController(UpdateSender updateSender) {
+        this.updateSender = updateSender;
     }
+
 
     @PostMapping("/updates")
     public ResponseEntity<HttpStatus> updates(@RequestBody @Valid LinkUpdateRequest linkUpdateRequest) {
-        bot.sendUpdates(linkUpdateRequest);
+        updateSender.receiver(linkUpdateRequest);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

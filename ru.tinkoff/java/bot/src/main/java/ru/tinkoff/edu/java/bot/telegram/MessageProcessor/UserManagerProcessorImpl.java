@@ -25,11 +25,7 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
 
     private final ScrapperClient scrapperClient;
 
-    private Command searchCommandInList(String commandName) {
-        return commands.stream()
-                .filter(command -> command.command().equals(commandName))
-                .findFirst().get();
-    }
+
 
     @Override
     public List<? extends Command> commands() {
