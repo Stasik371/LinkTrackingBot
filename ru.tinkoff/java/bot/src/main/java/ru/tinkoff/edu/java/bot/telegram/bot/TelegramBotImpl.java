@@ -19,6 +19,7 @@ import java.util.List;
 
 @Component
 public class TelegramBotImpl implements Bot {
+
     private final TelegramBot bot;
 
     private final UserManagerProcessor userManagerProcessor;

@@ -10,6 +10,7 @@ import java.util.List;
 public interface Bot extends AutoCloseable, UpdatesListener {
 
 
+
     @Override
     int process(List<Update> updates);
 

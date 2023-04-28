@@ -12,6 +12,7 @@ import ru.tinkoff.edu.java.bot.update.senders.UpdateReciever;
 @ConditionalOnProperty(prefix = "app", name = "use-queue", havingValue = "true")
 public class ScrapperQueueListenerConfig {
 
+
     @Bean
     public UpdateReciever scrapperQueueListener(Bot bot) {
         return new ScrapperQueueListener(bot);

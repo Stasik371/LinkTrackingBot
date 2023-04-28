@@ -8,6 +8,7 @@ import ru.tinkoff.edu.java.bot.telegram.bot.Bot;
 @Component
 public class HttpUpdateListener implements UpdateReciever {
 
+
     private final Bot bot;
 
     @Autowired

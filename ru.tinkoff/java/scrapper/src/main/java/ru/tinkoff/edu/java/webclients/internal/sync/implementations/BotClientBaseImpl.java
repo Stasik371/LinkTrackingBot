@@ -14,6 +14,7 @@ import ru.tinkoff.edu.java.webclients.internal.sync.interfaces.BotClient;
 @Getter
 @Setter
 public class BotClientBaseImpl implements BotClient {
+
     private final WebClient webClient;
 
     @Value("${app.bot-base-url}")

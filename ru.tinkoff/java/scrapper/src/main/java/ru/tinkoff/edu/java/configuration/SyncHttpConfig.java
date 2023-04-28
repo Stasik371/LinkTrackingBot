@@ -13,6 +13,7 @@ import ru.tinkoff.edu.java.webclients.internal.sync.implementations.BotClientBas
 @ConditionalOnProperty(prefix = "app", name = "use-queue", havingValue = "false")
 @Configuration
 public class SyncHttpConfig {
+
     @Value("${app.bot-base-url}")
     private String botBaseUrl;
 

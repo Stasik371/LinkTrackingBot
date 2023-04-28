@@ -6,5 +6,6 @@ import ru.tinkoff.edu.java.webclients.internal.dto.LinkUpdate;
 
 public interface BotClient {
 
+
     HttpStatus sendUpdates(LinkUpdate linkUpdate);
 }

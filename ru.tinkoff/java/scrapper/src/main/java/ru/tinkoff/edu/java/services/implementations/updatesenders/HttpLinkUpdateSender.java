@@ -6,6 +6,7 @@ import ru.tinkoff.edu.java.webclients.internal.sync.interfaces.BotClient;
 
 
 public class HttpLinkUpdateSender implements UpdateSender {
+
     private final BotClient botClient;
 
     @Autowired
