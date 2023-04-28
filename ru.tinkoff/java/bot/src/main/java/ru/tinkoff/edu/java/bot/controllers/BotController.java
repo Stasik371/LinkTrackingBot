@@ -10,23 +10,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.bot.controllers.dto.LinkUpdateRequest;
-import ru.tinkoff.edu.java.bot.update.senders.UpdateSender;
+import ru.tinkoff.edu.java.bot.update.senders.HttpUpdateListener;
 
 @RestController
 public class BotController {
 
 
-    private final UpdateSender updateSender;
+    private final HttpUpdateListener httpUpdateListener;
 
     @Autowired
-    public BotController(UpdateSender updateSender) {
-        this.updateSender = updateSender;
+    public BotController(HttpUpdateListener httpUpdateListener) {
+        this.httpUpdateListener = httpUpdateListener;
     }
 
 
     @PostMapping("/updates")
     public ResponseEntity<HttpStatus> updates(@RequestBody @Valid LinkUpdateRequest linkUpdateRequest) {
-        updateSender.receiver(linkUpdateRequest);
+        httpUpdateListener.receiver(linkUpdateRequest);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
