@@ -2,7 +2,7 @@ package ru.tinkoff.edu.java.domain;
 
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
 
-
+import java.net.URI;
 import java.util.List;
 
 public interface TgChatRepository {
@@ -14,5 +14,5 @@ public interface TgChatRepository {
 
     Boolean existsById(long id);
 
-
+    List<TgChatModel> readAllByURI(URI uri);
 }

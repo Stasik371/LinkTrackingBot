@@ -34,20 +34,6 @@ services:
     networks:
       - backend
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: 'rabbitmq:3.6-management-alpine'
-    volumes:
-      - ./rabbitmq:/var/lib/rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      AMQP_URL: "AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5"
-    networks:
-      - backend
-
-
 networks:
   backend:
     driver: bridge

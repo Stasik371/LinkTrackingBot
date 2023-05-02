@@ -18,4 +18,5 @@ create table link
     last_activity_at  timestamp,
     issue_count     integer,
     answer_count    integer
+
 );

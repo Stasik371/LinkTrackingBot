@@ -3,23 +3,25 @@ package ru.tinkoff.edu.java.domain.jooq.repository;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.domain.LinkRepository;
+import ru.tinkoff.edu.java.domain.jooq.generated.tables.Chat;
 import ru.tinkoff.edu.java.domain.jooq.generated.tables.Link;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
 
 import java.net.URI;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-
-
-
+@Repository
 public class JooqLinkRepository implements LinkRepository {
 
     private final DSLContext context;
-    @Value("${app.minutes-to-check}")
+    @Value("${minutesToCheck}")
     private int minutesToCheck;
 
     @Autowired
@@ -27,28 +29,18 @@ public class JooqLinkRepository implements LinkRepository {
         this.context = context;
     }
 
+    private Chat chat = Chat.CHAT;
 
-    private final Link link = Link.LINK;
+    private Link link = Link.LINK;
 
     @Override
     public List<LinkModel> readAllToUpdate() {
-        var cutoffTime = new Timestamp(System.currentTimeMillis() - (long) minutesToCheck * 60 * 1000);
-        return context
-                .select(link)
-                .where(link.LAST_CHECKED_AT
-                        .le(cutoffTime.toLocalDateTime()))
-                .fetch()
+        return readAll()
                 .stream()
-                .map(record -> new LinkModel(
-                        record.getValue(link.LINK_ID_PK),
-                        record.getValue(link.CHAT_ID),
-                        URI.create(record.getValue(link.URI)),
-                        record.getValue(link.LAST_CHECKED_AT)
-                                .atOffset(ZoneOffset.UTC),
-                        record.getValue(link.LAST_ACTIVITY_AT)
-                                .atOffset(ZoneOffset.UTC),
-                        record.getValue(link.ISSUE_COUNT),
-                        record.getValue(link.ANSWER_COUNT)))
+                .filter(l -> l
+                        .lastCheckedAt()
+                        .isBefore(OffsetDateTime.of(LocalDateTime.now()
+                                .minusMinutes(minutesToCheck), ZoneOffset.UTC)))
                 .toList();
     }
 
@@ -58,7 +50,6 @@ public class JooqLinkRepository implements LinkRepository {
                 .select()
                 .from(link)
                 .where(link.CHAT_ID.eq(tgChatId))
-                .fetch()
                 .stream()
                 .map(record -> new LinkModel(
                         record.getValue(link.LINK_ID_PK),
@@ -74,11 +65,11 @@ public class JooqLinkRepository implements LinkRepository {
     }
 
     @Override
+    @Transactional
     public List<LinkModel> readAll() {
         return context
                 .select()
                 .from(link)
-                .fetch()
                 .stream()
                 .map(record -> new LinkModel(
                         record.getValue(link.LINK_ID_PK),
@@ -94,6 +85,7 @@ public class JooqLinkRepository implements LinkRepository {
     }
 
     @Override
+    @Transactional
     public URI delete(URI uri, long tgChatId) {
         context
                 .deleteFrom(link)
@@ -136,16 +128,5 @@ public class JooqLinkRepository implements LinkRepository {
                 .set(this.link.ANSWER_COUNT, link.answerCount())
                 .where(this.link.LINK_ID_PK.eq(link.id()))
                 .execute();
-    }
-
-
-    public List<TgChatModel> readAllByURI(URI uri) {
-        return context
-                .select()
-                .from(link)
-                .where(link.URI.eq(uri.toString()))
-                .stream()
-                .map(l -> new TgChatModel(l.getValue(link.CHAT_ID)))
-                .toList();
     }
 }
