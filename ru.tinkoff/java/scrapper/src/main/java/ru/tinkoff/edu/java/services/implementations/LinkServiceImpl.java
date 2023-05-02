@@ -2,6 +2,7 @@ package ru.tinkoff.edu.java.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.controllers.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.controllers.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.domain.LinkRepository;
@@ -9,13 +10,12 @@ import ru.tinkoff.edu.java.domain.TgChatRepository;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
 import ru.tinkoff.edu.java.services.interfaces.LinkService;
 import ru.tinkoff.edu.java.util.exceptions.*;
-import ru.tinkoff.edu.java.webclients.outside.interfaces.GitHubClient;
-import ru.tinkoff.edu.java.webclients.outside.interfaces.StackOverFlowClient;
 import ru.tinkoff.edu.linkparser.parsers.ChainOfParsers;
 import ru.tinkoff.edu.linkparser.records.GithubRecord;
 import ru.tinkoff.edu.linkparser.records.StackOverFlowRecord;
 
 import java.net.URI;
+
 
 @Service
 public class LinkServiceImpl implements LinkService {
@@ -24,36 +24,25 @@ public class LinkServiceImpl implements LinkService {
 
     private final TgChatRepository tgChatRepository;
 
-    private final GitHubClient gitHubClientBase;
-
-    private final StackOverFlowClient stackOverFlowClient;
 
     @Autowired
-    public LinkServiceImpl(LinkRepository linkRepository, TgChatRepository tgChatRepository,
-                           GitHubClient gitHubClientBase, StackOverFlowClient stackOverFlowClient) {
+    public LinkServiceImpl(LinkRepository linkRepository, TgChatRepository tgChatRepository) {
         this.linkRepository = linkRepository;
         this.tgChatRepository = tgChatRepository;
-        this.gitHubClientBase = gitHubClientBase;
-        this.stackOverFlowClient = stackOverFlowClient;
+
     }
 
 
     @Override
+    @Transactional
     public LinkResponse add(long tgChatId, URI url) {
         if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
         if (linkRepository.existsByURIAndTgChatId(url, tgChatId))
             throw new ReAddingALinkException("LinkModel was added before");
         try {
             var record = ChainOfParsers.parse(url);
-            if (record instanceof GithubRecord) {
-                var response = gitHubClientBase.fetchRepositoryInfo((GithubRecord) record);
-                var linkModel = linkRepository.add(new LinkModel(tgChatId, url,
-                        response.updatedAt(), response.issuesCount(), 0));
-                return new LinkResponse(linkModel.tgChatId(), linkModel.uri().toString());
-            } else if (record instanceof StackOverFlowRecord) {
-                var response = stackOverFlowClient.fetchQuestionInfo((StackOverFlowRecord) record);
-                var linkModel = linkRepository.add(new LinkModel(tgChatId, url,
-                        response.lastActivityDate(), 0, response.answerCount()));
+            if (record instanceof GithubRecord || record instanceof StackOverFlowRecord) {
+                var linkModel = linkRepository.add(new LinkModel(tgChatId, url));
                 return new LinkResponse(linkModel.tgChatId(), linkModel.uri().toString());
             }
             throw new NullPointerException("Link is not supported");
@@ -63,6 +52,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    @Transactional
     public LinkResponse remove(long tgChatId, URI url) {
         if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
         if (!linkRepository.existsByURIAndTgChatId(url, tgChatId))
@@ -72,6 +62,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    @Transactional
     public ListLinksResponse listAll(long tgChatId) {
         if (!tgChatRepository.existsById(tgChatId)) throw new ChatNotFoundException("Chat not found");
         var links = linkRepository.readAllWithTgChatId(tgChatId);

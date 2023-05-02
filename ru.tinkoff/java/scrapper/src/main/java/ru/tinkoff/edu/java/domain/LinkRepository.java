@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.domain;
 
 import ru.tinkoff.edu.java.domain.model.LinkModel;
+import ru.tinkoff.edu.java.domain.model.TgChatModel;
 
 import java.net.URI;
 import java.util.List;
@@ -20,4 +21,6 @@ public interface LinkRepository {
     Boolean existsByURIAndTgChatId(URI uri, long tgChatId);
 
     void update(LinkModel link);
+
+    List<TgChatModel> readAllByURI(URI uri);
 }

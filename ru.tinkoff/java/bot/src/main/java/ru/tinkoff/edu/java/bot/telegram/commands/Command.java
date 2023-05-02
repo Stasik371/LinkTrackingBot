@@ -14,11 +14,9 @@ public interface Command {
     SendMessage handle(Update update);
 
     default boolean supports(Update update) {
-        return switch (update.message().text()) {
-            case "/help", "/list", "/start", "/track", "/untrack" -> true;
-            default -> false;
-        };
+        return command().equals(update.message().text());
     }
+
 
     default BotCommand toApiCommand() {
         return new BotCommand(command(), description());

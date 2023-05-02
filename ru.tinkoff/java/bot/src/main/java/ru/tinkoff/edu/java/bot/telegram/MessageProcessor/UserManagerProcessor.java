@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface UserManagerProcessor {
 
-    public List<? extends Command> commands();
+    List<? extends Command> commands();
 
     SendMessage process(Update update);
+    void unregisterChat(Update update);
 }
