@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.bot.controllers.dto.LinkUpdateRequest;
+<<<<<<< HEAD
 
 @RestController
 public class BotController {
@@ -19,6 +20,25 @@ public class BotController {
         } catch (Exception e) {
             //TODO
         }
+=======
+import ru.tinkoff.edu.java.bot.update.senders.UpdateSender;
+
+@RestController
+public class BotController {
+
+
+    private final UpdateSender updateSender;
+
+    @Autowired
+    public BotController(UpdateSender updateSender) {
+        this.updateSender = updateSender;
+    }
+
+
+    @PostMapping("/updates")
+    public ResponseEntity<HttpStatus> updates(@RequestBody @Valid LinkUpdateRequest linkUpdateRequest) {
+        updateSender.receiver(linkUpdateRequest);
+>>>>>>> parent of d68e369 (little refactoring.Also added ability to listen sync and async messages together)
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
