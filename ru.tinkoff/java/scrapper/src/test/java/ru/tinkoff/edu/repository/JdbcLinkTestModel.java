@@ -45,12 +45,7 @@ public class JdbcLinkTestModel extends IntegrationEnvironment {
 
     @BeforeEach
     public void createRecords() {
-<<<<<<< HEAD:ru.tinkoff/java/scrapper/src/test/java/ru/tinkoff/edu/repository/JdbcLinkTestModel.java
         jdbcTemplate.update("insert into chat(telegram_chat_id) values (?)", tgChatId);
-=======
-        jpaTgChatRepository.add(tgChatId);
-
->>>>>>> parent of 8b22849 (stage 2(and minor refactoring with app.configuration)):ru.tinkoff/java/scrapper/src/test/java/ru/tinkoff/edu/repository/jpa/JpaLinkTest.java
         for (var url : urls) {
             jdbcTemplate.update("insert into link(chat_id, uri, last_checked_at) values (?, ?, ?)",
                     tgChatId, url, OffsetDateTime.now());
