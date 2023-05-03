@@ -18,6 +18,9 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
+        
+      - name: List files
+        run: ls -a
 
       - name: Build Maven project
         run: mvn package -pl bot -am
