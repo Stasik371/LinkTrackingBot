@@ -21,6 +21,9 @@ jobs:
         
       - name: List files
         run: ls -a
+        
+      - name: cd to required  files
+        run: cd .\ru.tinkoff\java\
 
       - name: Build Maven project
         run: mvn package -pl bot -am
