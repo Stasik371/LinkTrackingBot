@@ -14,9 +14,12 @@ permissions:
 env:
   TOKEN: ${{secrets.TOKEN}}
 
-jobs:
+jobs:  
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ru.tinkoff/java
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
