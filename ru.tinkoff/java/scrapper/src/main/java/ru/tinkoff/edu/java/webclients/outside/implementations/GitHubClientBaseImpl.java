@@ -1,31 +1,45 @@
 package ru.tinkoff.edu.java.webclients.outside.implementations;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.tinkoff.edu.linkparser.records.GithubRecord;
-import ru.tinkoff.edu.java.webclients.outside.builders.GitHubWebClientBuilder;
 import ru.tinkoff.edu.java.webclients.outside.dto.GitHubResponse;
 import ru.tinkoff.edu.java.webclients.outside.interfaces.GitHubClient;
 
+import java.time.Duration;
+
 
 public class GitHubClientBaseImpl implements GitHubClient {
+    @Value("${client.git-hub-base-url}")
+    private String baseUrl;
 
-    private final WebClient client;
+    private final WebClient webClient;
+
 
     public GitHubClientBaseImpl(String url) {
-        client = new GitHubWebClientBuilder().build(url);
+        webClient = WebClient
+                .builder()
+                .baseUrl(url)
+                .build();
     }
 
     public GitHubClientBaseImpl() {
-        client = new GitHubWebClientBuilder().build(null);
+        webClient = WebClient
+                .builder()
+                .baseUrl(baseUrl)
+                .build();
+
     }
 
     @Override
     public GitHubResponse fetchRepositoryInfo(GithubRecord githubRecord) {
-        return client.get()
+        return webClient
+                .get()
                 .uri("/repos/{user}/{repo}", githubRecord.user(), githubRecord.repository())
                 .retrieve()
                 .bodyToMono(GitHubResponse.class)
+                .timeout(Duration.ofSeconds(10))
                 .block();
     }
 }

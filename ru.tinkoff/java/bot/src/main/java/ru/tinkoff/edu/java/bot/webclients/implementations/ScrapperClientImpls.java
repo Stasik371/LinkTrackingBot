@@ -49,12 +49,10 @@ public class ScrapperClientImpls implements ScrapperClient {
         return webClient.post()
                 .uri("/tg-chat/{id}", id)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response -> {
-                    return response.bodyToMono(ApiErrorResponseDTO.class).flatMap(error -> {
-                        return Mono.error(new ApiErrorResponse(error.description(), error.code(),
-                                error.exceptionsName(), error.exceptionMessage(), error.stacktrace()));
-                    });
-                })
+                .onStatus(HttpStatusCode::is4xxClientError, response -> response
+                        .bodyToMono(ApiErrorResponseDTO.class)
+                        .flatMap(error -> Mono.error(new ApiErrorResponse(error.description(), error.code(),
+                        error.exceptionsName(), error.exceptionMessage(), error.stacktrace()))))
                 .bodyToMono(HttpStatus.class)
                 .block();
     }
@@ -64,12 +62,10 @@ public class ScrapperClientImpls implements ScrapperClient {
         return webClient.delete()
                 .uri("/tg-chat/{id}", id)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response -> {
-                    return response.bodyToMono(ApiErrorResponseDTO.class).flatMap(error -> {
-                        return Mono.error(new ApiErrorResponse(error.description(), error.code(),
-                                error.exceptionsName(), error.exceptionMessage(), error.stacktrace()));
-                    });
-                })
+                .onStatus(HttpStatusCode::is4xxClientError, response -> response
+                        .bodyToMono(ApiErrorResponseDTO.class)
+                        .flatMap(error -> Mono.error(new ApiErrorResponse(error.description(), error.code(),
+                        error.exceptionsName(), error.exceptionMessage(), error.stacktrace()))))
                 .bodyToMono(HttpStatus.class)
                 .block();
     }
@@ -80,12 +76,10 @@ public class ScrapperClientImpls implements ScrapperClient {
                 .uri("/links")
                 .header(REQUIRED_HEADER, Long.toString(tgChatId))
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response -> {
-                    return response.bodyToMono(ApiErrorResponseDTO.class).flatMap(error -> {
-                        return Mono.error(new ApiErrorResponse(error.description(), error.code(),
-                                error.exceptionsName(), error.exceptionMessage(), error.stacktrace()));
-                    });
-                })
+                .onStatus(HttpStatusCode::is4xxClientError, response -> response
+                        .bodyToMono(ApiErrorResponseDTO.class)
+                        .flatMap(error -> Mono.error(new ApiErrorResponse(error.description(), error.code(),
+                        error.exceptionsName(), error.exceptionMessage(), error.stacktrace()))))
                 .bodyToMono(ListLinksResponse.class)
                 .block();
     }
@@ -97,12 +91,10 @@ public class ScrapperClientImpls implements ScrapperClient {
                 .body(Mono.just(linkRequest), RemoveLinkRequest.class)
                 .header(REQUIRED_HEADER, Long.toString(tgChatId))
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response -> {
-                    return response.bodyToMono(ApiErrorResponseDTO.class).flatMap(error -> {
-                        return Mono.error(new ApiErrorResponse(error.description(), error.code(),
-                                error.exceptionsName(), error.exceptionMessage(), error.stacktrace()));
-                    });
-                })
+                .onStatus(HttpStatusCode::is4xxClientError, response -> response
+                        .bodyToMono(ApiErrorResponseDTO.class)
+                        .flatMap(error -> Mono.error(new ApiErrorResponse(error.description(), error.code(),
+                        error.exceptionsName(), error.exceptionMessage(), error.stacktrace()))))
                 .bodyToMono(RemoveLinkResponse.class)
                 .block();
     }
@@ -114,12 +106,10 @@ public class ScrapperClientImpls implements ScrapperClient {
                 .body(Mono.just(linkRequest), AddLinkRequest.class)
                 .header(REQUIRED_HEADER, Long.toString(tgChatId))
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response -> {
-                    return response.bodyToMono(ApiErrorResponseDTO.class).flatMap(error -> {
-                        return Mono.error(new ApiErrorResponse(error.description(), error.code(),
-                                error.exceptionsName(), error.exceptionMessage(), error.stacktrace()));
-                    });
-                })
+                .onStatus(HttpStatusCode::is4xxClientError, response -> response
+                        .bodyToMono(ApiErrorResponseDTO.class)
+                        .flatMap(error -> Mono.error(new ApiErrorResponse(error.description(), error.code(),
+                        error.exceptionsName(), error.exceptionMessage(), error.stacktrace()))))
                 .bodyToMono(LinkResponse.class)
                 .block();
     }

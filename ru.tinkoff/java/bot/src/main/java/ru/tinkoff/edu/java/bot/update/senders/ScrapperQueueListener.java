@@ -7,7 +7,7 @@ import ru.tinkoff.edu.java.bot.controllers.dto.LinkUpdateRequest;
 import ru.tinkoff.edu.java.bot.telegram.bot.Bot;
 
 @RabbitListener(queues = "${app.queue-name}")
-public class ScrapperQueueListener implements UpdateSender {
+public class ScrapperQueueListener implements UpdateReciever {
 
     private final Bot bot;
 

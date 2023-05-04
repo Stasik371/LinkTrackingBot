@@ -28,7 +28,6 @@ public class RabbitMqConfig {
 
     @Bean
     public Queue queue() {
-        System.err.println("bar!!!");
         return QueueBuilder
                 .nonDurable(queueName)
                 .withArgument("x-dead-letter-exchange", exchangeName + ".dlx")
@@ -77,9 +76,7 @@ public class RabbitMqConfig {
 
     @Bean
     public FanoutExchange deadExchange() {
-        System.err.println("foo!!!");
         return new FanoutExchange(exchangeName + ".dlx", false, false);
     }
 
 }
-
