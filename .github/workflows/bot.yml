@@ -39,11 +39,17 @@ jobs:
         run: docker build --build-arg bot_token=$token --file bot.Dockerfile -t bot .
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@1
         with:
             registry: ghcr.io
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: repoToLowerCase
+      - id: string
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ github.repository }}
+
       - name: push Docker image
-        run: docker push ${{ github.repository }}/bot:latest
+        run: docker push ${{ steps.string.outputs.lowercase }}/bot:latest
