@@ -38,4 +38,4 @@ jobs:
         run: mvn package -pl bot -am
 
       - name: Build Docker image
-        run: docker build-arg bot_token=$TOKEN --file bot.Dockerfile -t bot .
+        run: docker build --build-arg bot_token=$TOKEN --file bot.Dockerfile -t bot .
