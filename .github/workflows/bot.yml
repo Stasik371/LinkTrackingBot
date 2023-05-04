@@ -3,12 +3,14 @@ name: Bot CI with Maven
 on:
   push:
     paths:
-        - .github/workflows/bot.yml
-        - ru.tinkoff/java/bot**
+      - .github/workflows/bot.yml
+      - ru.tinkoff/java/bot**
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-      
+
+permissions:
+  packages: write
 env:
   TOKEN: ${{secrets.TOKEN}}
 
@@ -18,10 +20,10 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
-        
+
       - name: List files
         run: ls -a
-        
+
       - name: cd to required  files
         run: cd ru.tinkoff/java
 
@@ -29,4 +31,4 @@ jobs:
         run: mvn package -pl bot -am
 
       - name: Build Docker image
-        run: docker build --file bot.Dockerfile -t bot .
+        run: docker build-arg bot_token=${{secrets.TOKEN}} --file bot.Dockerfile -t bot .
