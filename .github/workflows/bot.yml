@@ -13,7 +13,9 @@ on:
 permissions:
   packages: write
 env:
-  TOKEN: ${{secrets.TOKEN}}
+  token: ${{ secrets.TOKEN }}
+  username: ${{ secrets.DOCKER_USERNAME }}
+  password: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:  
   build:
@@ -39,4 +41,10 @@ jobs:
         run: mvn package -pl bot -am
 
       - name: Build Docker image
-        run: docker build --build-arg bot_token=$TOKEN --file bot.Dockerfile -t bot .
+        run: docker build --build-arg bot_token=$token --file bot.Dockerfile -t bot .
+        
+      - name: login to Docker hub
+        run: docker login -u $username -p $password
+        
+      - name: Push image to hub
+        run: docker push bot:latest
