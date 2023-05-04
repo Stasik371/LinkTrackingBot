@@ -25,7 +25,7 @@ public class ScrapperClientImpls implements ScrapperClient {
     private Long tgChatId;
     private final String REQUIRED_HEADER = "Tg-Chat-Id";
 
-    @Value("${client.baseUrl}")
+    @Value("${client.base-url}")
     private String baseUrl;
 
 
