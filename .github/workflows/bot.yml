@@ -1,6 +1,7 @@
 name: Bot CI with Maven
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/bot.yml
