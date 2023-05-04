@@ -24,9 +24,6 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v3
         
-      - name: cd to required files
-        run: cd ./ru.tinkoff/java
-        
       - name: List files
         run: ls -a
         
