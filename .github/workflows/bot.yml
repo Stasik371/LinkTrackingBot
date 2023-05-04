@@ -35,9 +35,6 @@ jobs:
       - name: Build Maven project
         run: mvn package -pl bot -am
 
-      - name: Build Docker image
-        run: docker build --build-arg bot_token=$token --file bot.Dockerfile -t bot .
-
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:
@@ -49,6 +46,9 @@ jobs:
         uses: ASzc/change-string-case-action@v5
         with:
           string: ${{ github.repository }}
+
+      - name: Build Docker image
+        run: docker build --build-arg bot_token=$token --file bot.Dockerfile -t ${{ steps.string.outputs.lowercase }}/bot .
 
       - name: push Docker image
         run: docker push ${{ steps.string.outputs.lowercase }}/bot:latest
