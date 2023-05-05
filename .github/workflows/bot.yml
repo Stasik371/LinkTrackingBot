@@ -48,7 +48,7 @@ jobs:
           string: ${{ github.repository }}
 
       - name: Build Docker image
-        run: docker build --build-arg bot_token=$token --file bot.Dockerfile -t ${{ steps.string.outputs.lowercase }}/bot .
+        run: docker build --build-arg bot_token=$token --file bot.Dockerfile -t ghcr.io/${{ steps.string.outputs.lowercase }}/bot .
 
       - name: push Docker image
-        run: docker push ${{ steps.string.outputs.lowercase }}/bot:latest
+        run: docker push ghcr.io/${{ steps.string.outputs.lowercase }}/bot:latest
