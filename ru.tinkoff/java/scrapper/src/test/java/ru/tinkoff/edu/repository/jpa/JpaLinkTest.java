@@ -10,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.IntegrationEnvironment;
+import ru.tinkoff.edu.java.ScrapperApplication;
 import ru.tinkoff.edu.java.domain.jpa.repository.JPALinkRepository;
 import ru.tinkoff.edu.java.domain.jpa.repository.JPATgChatRepository;
 import ru.tinkoff.edu.java.domain.model.LinkModel;
@@ -25,7 +27,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 
 
-@SpringBootTest
+@TestPropertySource(properties = "app.database-access-type=jpa")
+@SpringBootTest(classes = ScrapperApplication.class)
 public class JpaLinkTest extends IntegrationEnvironment {
 
     @Autowired
