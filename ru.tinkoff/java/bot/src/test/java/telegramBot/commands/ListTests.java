@@ -75,8 +75,8 @@ public class ListTests {
         LinkResponse link2 = new LinkResponse(2L, URI.create("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c"));
         var linksList = new ListLinksResponse(new LinkResponse[]{link1, link2}, 2);
         String messageText = "Список отслеживаемых ссылок:\n" +
-                link1.url().toString() + "\n" +
-                link2.url().toString() + "\n";
+            "1) " + link1.url().toString() + "\n\n" +
+            "2) " + link2.url().toString() + "\n\n";
 
         var message = new Message();
         var messageClass = message.getClass();
@@ -99,10 +99,6 @@ public class ListTests {
         updateMessageField.setAccessible(true);
         updateMessageField.set(update, message);
 
-
-        var lastCommandField = UserManagerProcessorImpl.class.getDeclaredField("lastCommand");
-        lastCommandField.setAccessible(true);
-        lastCommandField.set(messageProcessor, "/list");
 
         when(client.getAllLinks(anyLong())).thenReturn(linksList);
         SendMessage messageFromProcessor = messageProcessor.process(update);
@@ -137,10 +133,6 @@ public class ListTests {
         updateMessageField.setAccessible(true);
         updateMessageField.set(update, message);
 
-
-        var lastCommandField = UserManagerProcessorImpl.class.getDeclaredField("lastCommand");
-        lastCommandField.setAccessible(true);
-        lastCommandField.set(messageProcessor, "/list");
 
         when(client.getAllLinks(chatId)).thenReturn(response);
 
