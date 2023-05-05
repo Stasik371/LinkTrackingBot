@@ -2,16 +2,15 @@ package ru.tinkoff.edu.java.bot.telegram.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HelpCommand implements Command {
 
-    private final String COMMAND = "/help";
-    private final String DESCRIPTION = "Все доступные команды.";
+    private final String command = "/help";
+    private final String description = "Все доступные команды.";
 
-    private final String ANSWER = "Список доступных команд: \n" +
+    private final String answer = "Список доступных команд: \n" +
             "/start - Запуск/перезапуск бота.\n" +
             "/help - Список доступных команд.\n" +
             "/track - Начать отслеживание ссылки.\n" +
@@ -20,16 +19,16 @@ public class HelpCommand implements Command {
 
     @Override
     public String command() {
-        return COMMAND;
+        return command;
     }
 
     @Override
     public String description() {
-        return DESCRIPTION;
+        return description;
     }
 
     @Override
     public SendMessage handle(Update update) {
-        return new SendMessage(update.message().chat().id(), ANSWER);
+        return new SendMessage(update.message().chat().id(), answer);
     }
 }

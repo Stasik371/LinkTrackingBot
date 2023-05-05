@@ -23,7 +23,7 @@ public class ScrapperClientImpls implements ScrapperClient {
     private final WebClient webClient;
 
     private Long tgChatId;
-    private final String REQUIRED_HEADER = "Tg-Chat-Id";
+    private final String requiredHeader = "Tg-Chat-Id";
 
     @Value("${client.base-url}")
     private String baseUrl;
@@ -34,7 +34,6 @@ public class ScrapperClientImpls implements ScrapperClient {
                 .builder()
                 .baseUrl(baseUrl)
                 .build();
-
     }
 
     public ScrapperClientImpls(String url) {
@@ -74,7 +73,7 @@ public class ScrapperClientImpls implements ScrapperClient {
     public ListLinksResponse getAllLinks(long tgChatId) {
         return webClient.get()
                 .uri("/links")
-                .header(REQUIRED_HEADER, Long.toString(tgChatId))
+                .header(requiredHeader, Long.toString(tgChatId))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, response -> response
                         .bodyToMono(ApiErrorResponseDTO.class)
@@ -89,7 +88,7 @@ public class ScrapperClientImpls implements ScrapperClient {
         return webClient.method(HttpMethod.DELETE)
                 .uri("/links")
                 .body(Mono.just(linkRequest), RemoveLinkRequest.class)
-                .header(REQUIRED_HEADER, Long.toString(tgChatId))
+                .header(requiredHeader, Long.toString(tgChatId))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, response -> response
                         .bodyToMono(ApiErrorResponseDTO.class)
@@ -104,7 +103,7 @@ public class ScrapperClientImpls implements ScrapperClient {
         return webClient.post()
                 .uri("/links")
                 .body(Mono.just(linkRequest), AddLinkRequest.class)
-                .header(REQUIRED_HEADER, Long.toString(tgChatId))
+                .header(requiredHeader, Long.toString(tgChatId))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, response -> response
                         .bodyToMono(ApiErrorResponseDTO.class)

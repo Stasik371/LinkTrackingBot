@@ -9,24 +9,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class UntrackCommand implements Command {
 
-    private final String COMMAND = "/untrack";
-    private final String DESCRIPTION = COMMAND + " -> перестать отслеживать ссылку.";
-    private final String GOOD_ANSWER_BEFORE = "Введите ссылку в формате URL, которую хотите прекратить отслеживать";
+    private final String command = "/untrack";
+    private final String description = command + " -> перестать отслеживать ссылку.";
+    private final String goodAnswerBefore = "Введите ссылку в формате URL, которую хотите прекратить отслеживать";
 
 
     @Override
     public String command() {
-        return COMMAND;
+        return command;
     }
 
     @Override
     public String description() {
-        return DESCRIPTION;
+        return description;
     }
 
     @Override
     public SendMessage handle(Update update) {
-        return new SendMessage(update.message().chat().id(), GOOD_ANSWER_BEFORE)
+        return new SendMessage(update.message().chat().id(), goodAnswerBefore)
                 .replyMarkup(new ForceReply().inputFieldPlaceholder("https://github.com/userName/repoName"));
     }
 }

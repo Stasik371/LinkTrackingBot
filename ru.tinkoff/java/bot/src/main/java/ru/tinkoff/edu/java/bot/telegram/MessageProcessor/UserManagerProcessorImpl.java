@@ -15,10 +15,10 @@ import java.util.List;
 
 public class UserManagerProcessorImpl implements UserManagerProcessor {
 
-    private final String GOOD_TRACK_ANSWER = "Ссылка успешна добавлена";
-    private final String GOOD_UNTRACK_ANSWER = "Ссылка успешно удалена";
-    private final String TRACK_ANSWER = "Введите ссылку в формате URL, которую хотите отслеживать";
-    private final String UNTRACK_ANSWER = "Введите ссылку в формате URL, которую хотите прекратить отслеживать";
+    private final String goodTrackAnswer = "Ссылка успешна добавлена";
+    private final String goodUntrackAnswer = "Ссылка успешно удалена";
+    private final String trackAnswer = "Введите ссылку в формате URL, которую хотите отслеживать";
+    private final String untrackAnswer = "Введите ссылку в формате URL, которую хотите прекратить отслеживать";
 
 
     private final List<? extends Command> commands;
@@ -44,20 +44,10 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
             if (command.supports(update)) return command.handle(update);
         }
         if (isReplyTrack(update)) {
-            try {
-                scrapperClient.addLink(update.message().chat().id(), new AddLinkRequest(update.message().text()));
-                return new SendMessage(update.message().chat().id(), GOOD_TRACK_ANSWER);
-            } catch (ApiErrorResponse errorResponse) {
-                return new SendMessage(update.message().chat().id(), errorResponse.getExceptionMessage());
-            }
+            return replyTrackSendMessage(update);
         }
         if (isReplyUntrack(update)) {
-            try {
-                scrapperClient.deleteLink(update.message().chat().id(), new RemoveLinkRequest(update.message().text()));
-                return new SendMessage(update.message().chat().id(), GOOD_UNTRACK_ANSWER);
-            } catch (ApiErrorResponse errorResponse) {
-                return new SendMessage(update.message().chat().id(), errorResponse.getExceptionMessage());
-            }
+            return replyUntrackSendMessage(update);
         }
         return unsupportedCommand(update);
     }
@@ -65,13 +55,31 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
     private boolean isReplyTrack(Update update) {
         if (update.message() == null) return false;
         Message reply = update.message().replyToMessage();
-        return reply != null && reply.text().equals(TRACK_ANSWER);
+        return reply != null && reply.text().equals(trackAnswer);
     }
 
     private boolean isReplyUntrack(Update update) {
         if (update.message() == null) return false;
         Message reply = update.message().replyToMessage();
-        return reply != null && reply.text().equals(UNTRACK_ANSWER);
+        return reply != null && reply.text().equals(untrackAnswer);
+    }
+
+    private SendMessage replyTrackSendMessage(Update update){
+        try {
+            scrapperClient.addLink(update.message().chat().id(), new AddLinkRequest(update.message().text()));
+            return new SendMessage(update.message().chat().id(), goodTrackAnswer);
+        } catch (ApiErrorResponse errorResponse) {
+            return new SendMessage(update.message().chat().id(), errorResponse.getExceptionMessage());
+        }
+    }
+
+    private SendMessage replyUntrackSendMessage(Update update){
+        try {
+            scrapperClient.deleteLink(update.message().chat().id(), new RemoveLinkRequest(update.message().text()));
+            return new SendMessage(update.message().chat().id(), goodUntrackAnswer);
+        } catch (ApiErrorResponse errorResponse) {
+            return new SendMessage(update.message().chat().id(), errorResponse.getExceptionMessage());
+        }
     }
 
     private SendMessage unsupportedCommand(Update update) {

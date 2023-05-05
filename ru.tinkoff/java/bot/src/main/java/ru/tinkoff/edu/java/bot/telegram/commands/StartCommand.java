@@ -10,10 +10,10 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.ScrapperClient;
 @Component
 public class StartCommand implements Command {
     private final ScrapperClient scrapperClient;
-    private final String COMMAND = "/start";
-    private final String DESCRIPTION = COMMAND + " -> запуск/перезапуск бота.";
+    private final String command = "/start";
+    private final String description = command + " -> запуск/перезапуск бота.";
 
-    private final String ANSWER = "Привет! Чтобы получить список доступных комманд используйте /help";
+    private final String answer = "Привет! Чтобы получить список доступных комманд используйте /help";
 
     @Autowired
     public StartCommand(ScrapperClient scrapperClient) {
@@ -22,19 +22,19 @@ public class StartCommand implements Command {
 
     @Override
     public String command() {
-        return COMMAND;
+        return command;
     }
 
     @Override
     public String description() {
-        return DESCRIPTION;
+        return description;
     }
 
     @Override
     public SendMessage handle(Update update) {
         try {
             scrapperClient.registerChat(update.message().chat().id());
-            return new SendMessage(update.message().chat().id(), ANSWER);
+            return new SendMessage(update.message().chat().id(), answer);
         } catch (ApiErrorResponse errorResponse) {
             return new SendMessage(update.message().chat().id(), errorResponse.getDescription());
         }

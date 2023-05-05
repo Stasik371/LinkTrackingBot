@@ -12,9 +12,18 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.ScrapperClient;
 public class UserMessageProcessorConfig {
     @Bean
     @Autowired
-    public UserManagerProcessor userMessageProcessor(ScrapperClient scrapperClient, StartCommand startCommand,
-                                                     HelpCommand helpCommand, TrackCommand trackCommand,
-                                                     UntrackCommand untrackCommand, ListCommand listCommand) {
-        return new UserManagerProcessorImpl(scrapperClient, startCommand, helpCommand, trackCommand, untrackCommand, listCommand);
+    public UserManagerProcessor userMessageProcessor(
+        ScrapperClient scrapperClient, StartCommand startCommand,
+        HelpCommand helpCommand, TrackCommand trackCommand,
+        UntrackCommand untrackCommand, ListCommand listCommand
+    ) {
+        return new UserManagerProcessorImpl(
+            scrapperClient,
+            startCommand,
+            helpCommand,
+            trackCommand,
+            untrackCommand,
+            listCommand
+        );
     }
 }
