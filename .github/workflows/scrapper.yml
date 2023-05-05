@@ -31,12 +31,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-
-      - name: Build Maven project
-        run: mvn package -pl $module_name -am
-        
+          
       - name: Docker Compose up
         run: docker-compose up -d
+     
+      - name: Build Maven project
+        run: mvn package -pl $module_name -am      
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1
@@ -55,6 +55,8 @@ jobs:
 
       - name: push Docker image
         run: docker push ghcr.io/${{ steps.string.outputs.lowercase }}/$module_name:latest
+  
+  
   checkstyle:
     runs-on: ubuntu-latest
     steps:
