@@ -54,6 +54,9 @@ jobs:
         run: docker push ghcr.io/${{ steps.string.outputs.lowercase }}/bot:latest
   checkstyle:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ru.tinkoff/java
     steps:
       - uses: actions/checkout@v3
       - name: Check module bot on code style
