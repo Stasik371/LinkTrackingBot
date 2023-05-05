@@ -22,123 +22,132 @@ import java.util.Arrays;
 public class ScrapperExceptionApiHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> httpMessageNotReadableExceptionHandler(@NotNull HttpMessageNotReadableException exception) {
+    public ResponseEntity<ApiErrorResponse> httpMessageNotReadableEx(@NotNull HttpMessageNotReadableException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "No request Body",
-                "400",
-                "HttpMessageNotReadableException",
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "No request Body",
+            "400",
+            "HttpMessageNotReadableException",
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler(WebExchangeBindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> webExchangeBindExceptionHandler(@NotNull WebExchangeBindException exception) {
+    public ResponseEntity<ApiErrorResponse> webExchangeBindEx(@NotNull WebExchangeBindException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "LinkModel is not valid",
-                "400",
-                "webExchangeBindExceptionException(Rejected url)",
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "LinkModel is not valid",
+            "400",
+            "webExchangeBindExceptionException(Rejected url)",
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiErrorResponse> chatNotFoundExceptionHandler(@NotNull ChatNotFoundException exception) {
+    public ResponseEntity<ApiErrorResponse> chatNotFoundEx(@NotNull ChatNotFoundException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "Chat not found",
-                "404",
-                "ChatNotFoundException",
-                exception.getMessage(),
-                null);
-        return ResponseEntity.status(404).body(apiErrorResponse);
+            "Chat not found",
+            "404",
+            "ChatNotFoundException",
+            ex.getMessage(),
+            null
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiErrorResponse> chatNotFoundExceptionHandler(@NotNull MethodNotAllowedException exception) {
+    public ResponseEntity<ApiErrorResponse> methodNotAllowedEx(@NotNull MethodNotAllowedException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "Method not allowed",
-                "405",
-                "MethodNotAllowedException",
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(405).body(apiErrorResponse);
+            "Method not allowed",
+            "405",
+            "MethodNotAllowedException",
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(apiErrorResponse);
     }
-
 
     @ExceptionHandler(ReAddingALinkException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ResponseEntity<ApiErrorResponse> reAddingALinkExceptionHandler(@NotNull ReAddingALinkException exception) {
+    public ResponseEntity<ApiErrorResponse> reAddingALinkEx(@NotNull ReAddingALinkException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "LinkModel has already been added",
-                "405",
-                "reAddingALinkException",
-                exception.getMessage(),
-                null);
-        return ResponseEntity.status(405).body(apiErrorResponse);
+            "LinkModel has already been added",
+            "405",
+            "reAddingALinkException",
+            ex.getMessage(),
+            null
+        );
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(apiErrorResponse);
     }
 
     @ExceptionHandler(LinkNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiErrorResponse> linkNotFoundExceptionHandler(@NotNull LinkNotFoundException exception) {
+    public ResponseEntity<ApiErrorResponse> linkNotFoundEx(@NotNull LinkNotFoundException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "LinkModel not found",
-                "404",
-                "LinkNotFoundException",
-                exception.getMessage(),
-                null);
-        return ResponseEntity.status(404).body(apiErrorResponse);
+            "LinkModel not found",
+            "404",
+            "LinkNotFoundException",
+            ex.getMessage(),
+            null
+        );
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(apiErrorResponse);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> illegalArgumentExceptionHandler(@NotNull IllegalArgumentException exception) {
+    public ResponseEntity<ApiErrorResponse> illegalArgumentEx(@NotNull IllegalArgumentException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "Illegal arguments",
-                "400",
-                "IllegalArgumentException",
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "Illegal arguments",
+            "400",
+            "IllegalArgumentException",
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> reRegistrationExceptionHandler(@NotNull DuplicateKeyException exception) {
+    public ResponseEntity<ApiErrorResponse> reRegistrationEx(@NotNull DuplicateKeyException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "Chat was registered before",
-                "400",
-                exception.getClass().toString(),
-                exception.getMessage(),
-                null);
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "Chat was registered before",
+            "400",
+            ex.getClass().toString(),
+            ex.getMessage(),
+            null
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler(NoTrackedLinkException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> reRegistrationExceptionHandler(@NotNull NoTrackedLinkException exception) {
+    public ResponseEntity<ApiErrorResponse> noTrackedLinkEx(@NotNull NoTrackedLinkException ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "No tracked links",
-                "400",
-                exception.getClass().toString(),
-                exception.getMessage(),
-                null);
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "No tracked links",
+            "400",
+            ex.getClass().toString(),
+            ex.getMessage(),
+            null
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponse> reRegestrationHandler(@NotNull Exception exception) {
+    public ResponseEntity<ApiErrorResponse> unknownEx(@NotNull Exception ex) {
         var apiErrorResponse = new ApiErrorResponse(
-                "Unknown exception, read stackTrace",
-                "400",
-                exception.getClass().toString(),
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "Unknown exception, read stackTrace",
+            "400",
+            ex.getClass().toString(),
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
 }

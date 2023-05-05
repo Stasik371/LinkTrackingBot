@@ -40,8 +40,8 @@ public class LinkServiceImpl implements LinkService {
         if (linkRepository.existsByURIAndTgChatId(url, tgChatId))
             throw new ReAddingALinkException("LinkModel was added before");
         try {
-            var record = ChainOfParsers.parse(url);
-            if (record instanceof GithubRecord || record instanceof StackOverFlowRecord) {
+            var infoRecord = ChainOfParsers.parse(url);
+            if (infoRecord instanceof GithubRecord || infoRecord instanceof StackOverFlowRecord) {
                 var linkModel = linkRepository.add(new LinkModel(tgChatId, url));
                 return new LinkResponse(linkModel.tgChatId(), linkModel.uri().toString());
             }

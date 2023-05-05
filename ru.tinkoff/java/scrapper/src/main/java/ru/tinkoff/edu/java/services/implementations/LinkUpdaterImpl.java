@@ -45,13 +45,13 @@ public class LinkUpdaterImpl implements LinkUpdater {
     public void update() {
         var links = linkRepository.readAllToUpdate();
         for (var link : links) {
-            var record = ChainOfParsers.parse(link.uri());
-            if (record instanceof GithubRecord) {
-                var response = gitHubClient.fetchRepositoryInfo((GithubRecord) record);
+            var infoRecord = ChainOfParsers.parse(link.uri());
+            if (infoRecord instanceof GithubRecord) {
+                var response = gitHubClient.fetchRepositoryInfo((GithubRecord) infoRecord);
                 var newLink = checkInfoAboutGithubRecord(response, link);
                 linkRepository.update(newLink);
-            } else if (record instanceof StackOverFlowRecord) {
-                var response = stackOverFlowClient.fetchQuestionInfo((StackOverFlowRecord) record);
+            } else if (infoRecord instanceof StackOverFlowRecord) {
+                var response = stackOverFlowClient.fetchQuestionInfo((StackOverFlowRecord) infoRecord);
                 var newLink = checkInfoAboutStackOverFlowRecord(response, link);
                 linkRepository.update(newLink);
             }

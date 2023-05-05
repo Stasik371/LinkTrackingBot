@@ -27,9 +27,9 @@ public class JooqTgChatRepository implements TgChatRepository {
                 .select()
                 .from(chat)
                 .stream()
-                .map(record -> new TgChatModel(
-                        record.getValue(chat.CHAT_ID_PK),
-                        record.getValue(chat.TELEGRAM_CHAT_ID)))
+                .map(r -> new TgChatModel(
+                        r.getValue(chat.CHAT_ID_PK),
+                        r.getValue(chat.TELEGRAM_CHAT_ID)))
                 .toList();
     }
 

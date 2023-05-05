@@ -16,6 +16,8 @@ public class GitHubClientBaseImpl implements GitHubClient {
 
     private final WebClient webClient;
 
+    private final int secondToBlock = 10;
+
 
     public GitHubClientBaseImpl(String url) {
         webClient = WebClient
@@ -39,7 +41,7 @@ public class GitHubClientBaseImpl implements GitHubClient {
                 .uri("/repos/{user}/{repo}", githubRecord.user(), githubRecord.repository())
                 .retrieve()
                 .bodyToMono(GitHubResponse.class)
-                .timeout(Duration.ofSeconds(10))
+                .timeout(Duration.ofSeconds(secondToBlock))
                 .block();
     }
 }

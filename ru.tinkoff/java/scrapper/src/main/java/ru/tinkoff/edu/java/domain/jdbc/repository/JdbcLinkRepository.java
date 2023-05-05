@@ -61,7 +61,9 @@ public class JdbcLinkRepository implements LinkRepository {
     @Override
     public LinkModel add(LinkModel model) {
         jdbcTemplate
-                .update("insert into link (chat_id, uri, last_checked_at, last_activity_at, issue_count, answer_count) values (?, ?, ?, ?, ?, ?)",
+                .update("insert into link " +
+                        "(chat_id, uri, last_checked_at, last_activity_at, issue_count, answer_count) " +
+                        "values (?, ?, ?, ?, ?, ?)",
                         model.tgChatId(),
                         model.uri().toString(),
                         model.lastCheckedAt(),
@@ -76,7 +78,8 @@ public class JdbcLinkRepository implements LinkRepository {
     @Override
     public Boolean existsByURIAndTgChatId(URI uri, long tgChatId) {
         return jdbcTemplate
-                .queryForObject("select exists(select 1 from link where uri = ? and chat_id=?)", Boolean.class, uri.toString(), tgChatId);
+                .queryForObject("select exists(select 1 from link where uri = ? and chat_id=?)",
+                    Boolean.class, uri.toString(), tgChatId);
     }
 
 
