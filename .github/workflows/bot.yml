@@ -13,9 +13,10 @@ on:
 permissions:
   packages: write
 env:
-  TOKEN: ${{secrets.TOKEN}}
+  token: ${{ secrets.TOKEN }}
+  module_name: bot
 
-jobs:  
+jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
@@ -24,19 +25,40 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
-        
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-        
-      - name: List files
-        run: ls -a
-        
+
       - name: Build Maven project
-        run: mvn package -pl bot -am
+        run: mvn package -pl $module_name -am
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: string
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ github.repository }}
 
       - name: Build Docker image
-        run: docker build --build-arg bot_token=$TOKEN --file bot.Dockerfile -t bot .
+        run: docker build --build-arg bot_token=$token --file $module_name.Dockerfile -t ghcr.io/${{ steps.string.outputs.lowercase }}/$module_name .
+
+      - name: push Docker image
+        run: docker push ghcr.io/${{ steps.string.outputs.lowercase }}/$module_name:latest
+  checkstyle:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ru.tinkoff/java
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check module bot on code style
+        run: mvn -pl $module_name -am checkstyle:check

@@ -32,6 +32,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Docker Compose up
+        run: docker-compose up -d
+
       - name: Build Maven project
         run: mvn package -pl $module_name -am
 
@@ -52,8 +55,13 @@ jobs:
 
       - name: push Docker image
         run: docker push ghcr.io/${{ steps.string.outputs.lowercase }}/$module_name:latest
+
+
   checkstyle:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ru.tinkoff/java
     steps:
       - uses: actions/checkout@v3
       - name: Check module bot on code style
