@@ -78,6 +78,7 @@ public class ListTests {
             "1) " + link1.url().toString() + "\n\n" +
             "2) " + link2.url().toString() + "\n\n";
 
+
         var message = new Message();
         var messageClass = message.getClass();
         var messageField = messageClass.getDeclaredField("text");
