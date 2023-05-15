@@ -11,8 +11,10 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.IntegrationEnvironment;
+import ru.tinkoff.edu.java.ScrapperApplication;
 import ru.tinkoff.edu.java.domain.jdbc.mappers.TgChatMapper;
 import ru.tinkoff.edu.java.domain.model.TgChatModel;
 import ru.tinkoff.edu.java.domain.jdbc.repository.JdbcTgChatRepository;
@@ -24,7 +26,8 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@SpringBootTest
+@TestPropertySource(properties = "app.database-access-type=jdbc")
+@SpringBootTest(classes = ScrapperApplication.class)
 public class JdbcTgChatModelTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;

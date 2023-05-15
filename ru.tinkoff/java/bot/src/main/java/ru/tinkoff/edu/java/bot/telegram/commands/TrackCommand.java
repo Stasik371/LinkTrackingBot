@@ -11,10 +11,10 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.ScrapperClient;
 public class TrackCommand implements Command {
 
     private final ScrapperClient scrapperClient;
-    private String COMMAND = "/track";
-    private String DESCRIPTION = COMMAND + " -> отследить ссылку.";
+    private String command = "/track";
+    private String description = command + " -> отследить ссылку.";
 
-    private String GOOD_ANSWER_BEFORE = "Введите ссылку в формате URL, которую хотите отслеживать";
+    private String goodAnswerBefore = "Введите ссылку в формате URL, которую хотите отслеживать";
 
     @Autowired
     public TrackCommand(ScrapperClient scrapperClient) {
@@ -23,17 +23,17 @@ public class TrackCommand implements Command {
 
     @Override
     public String command() {
-        return COMMAND;
+        return command;
     }
 
     @Override
     public String description() {
-        return DESCRIPTION;
+        return description;
     }
 
     @Override
     public SendMessage handle(Update update) {
-        return new SendMessage(update.message().chat().id(), GOOD_ANSWER_BEFORE)
+        return new SendMessage(update.message().chat().id(), goodAnswerBefore)
                 .replyMarkup(new ForceReply().inputFieldPlaceholder("https://github.com/userName/repoName"));
     }
 }

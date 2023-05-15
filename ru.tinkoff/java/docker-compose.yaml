@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
@@ -38,7 +38,7 @@ services:
     container_name: rabbitmq
     image: 'rabbitmq:3.6-management-alpine'
     volumes:
-      - ./rabbitmq:/var/lib/rabbitmq
+      - rabbitmq:/var/lib/rabbitmq/data
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -46,7 +46,9 @@ services:
       AMQP_URL: "AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5"
     networks:
       - backend
-
+volumes:
+  postgres-data:
+  rabbitmq:
 
 networks:
   backend:

@@ -75,8 +75,9 @@ public class ListTests {
         LinkResponse link2 = new LinkResponse(2L, URI.create("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c"));
         var linksList = new ListLinksResponse(new LinkResponse[]{link1, link2}, 2);
         String messageText = "Список отслеживаемых ссылок:\n" +
-                "1) " + link1.url().toString() + "\n\n" +
-                "2) " + link2.url().toString() + "\n\n";
+            "1) " + link1.url().toString() + "\n\n" +
+            "2) " + link2.url().toString() + "\n\n";
+
 
         var message = new Message();
         var messageClass = message.getClass();

@@ -14,51 +14,57 @@ import java.util.Arrays;
 
 @RestControllerAdvice
 public class BotExceptionApiHandler {
+
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponseDTO> httpMessageNotReadableException(@NotNull HttpMessageNotReadableException exception) {
+    public ResponseEntity<ApiErrorResponseDTO> messageNotReadableEx(@NotNull HttpMessageNotReadableException ex) {
         var apiErrorResponse = new ApiErrorResponseDTO(
-                "No request Body",
-                "400",
-                "HttpMessageNotReadableException",
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "No request Body",
+            "400",
+            "HttpMessageNotReadableException",
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponseDTO> methodArgumentNotValidException(@NotNull MethodArgumentNotValidException exception) {
+    public ResponseEntity<ApiErrorResponseDTO> methodArgumentNotValidEx(@NotNull MethodArgumentNotValidException ex) {
         var apiErrorResponse = new ApiErrorResponseDTO(
-                "Arguments are not valid",
-                "400",
-                "MethodArgumentNotValidException",
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "Arguments are not valid",
+            "400",
+            "MethodArgumentNotValidException",
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponseDTO> illegalArgumentExceptionHandler(@NotNull IllegalArgumentException exception) {
+    public ResponseEntity<ApiErrorResponseDTO> illegalArgumentException(@NotNull IllegalArgumentException ex) {
         var apiErrorResponse = new ApiErrorResponseDTO(
-                "Illegal arguments",
-                "400",
-                "IllegalArgumentException",
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "Illegal arguments",
+            "400",
+            "IllegalArgumentException",
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorResponseDTO> unknownExceptionHandler(@NotNull Exception exception) {
+    public ResponseEntity<ApiErrorResponseDTO> unknownException(@NotNull Exception exception) {
         var apiErrorResponse = new ApiErrorResponseDTO(
-                "Unknown exception, read stackTrace",
-                "400",
-                exception.getClass().toString(),
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new));
-        return ResponseEntity.status(400).body(apiErrorResponse);
+            "Unknown exception, read stackTrace",
+            "400",
+            exception.getClass().toString(),
+            exception.getMessage(),
+            Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 }

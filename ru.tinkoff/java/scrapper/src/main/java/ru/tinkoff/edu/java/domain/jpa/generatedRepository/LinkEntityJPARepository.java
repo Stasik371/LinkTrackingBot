@@ -2,12 +2,10 @@ package ru.tinkoff.edu.java.domain.jpa.generatedRepository;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.domain.jpa.entity.LinkEntity;
 
 
@@ -23,7 +21,7 @@ public interface LinkEntityJPARepository extends JpaRepository<LinkEntity, Long>
 
     void deleteLinkEntityByChatTelegramChatIdAndUri(Long telegramChatId, String uri);
 
-    boolean existsByUriAndChatTelegramChatId(String uri, Long chat_telegramChatId);
+    boolean existsByUriAndChatTelegramChatId(String uri, Long chatTelegramChatId);
 
     List<LinkEntity> findAllByUri(String uri);
 
