@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.bot.configuration;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +13,9 @@ import ru.tinkoff.edu.java.bot.webclients.interfaces.ScrapperClient;
 public class UserMessageProcessorConfig {
     @Bean
     @Autowired
-    public UserManagerProcessor userMessageProcessor(ScrapperClient scrapperClient, StartCommand startCommand,
+    public UserManagerProcessor userMessageProcessor(ScrapperClient scrapperClient, MeterRegistry meterRegistry, StartCommand startCommand,
                                                      HelpCommand helpCommand, TrackCommand trackCommand,
                                                      UntrackCommand untrackCommand, ListCommand listCommand) {
-        return new UserManagerProcessorImpl(scrapperClient, startCommand, helpCommand, trackCommand, untrackCommand, listCommand);
+        return new UserManagerProcessorImpl(scrapperClient, meterRegistry, startCommand, helpCommand, trackCommand, untrackCommand, listCommand);
     }
 }

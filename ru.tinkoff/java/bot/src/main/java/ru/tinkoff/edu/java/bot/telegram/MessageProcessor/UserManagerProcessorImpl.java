@@ -3,6 +3,8 @@ package ru.tinkoff.edu.java.bot.telegram.MessageProcessor;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import ru.tinkoff.edu.java.bot.telegram.commands.*;
 import ru.tinkoff.edu.java.bot.webclients.dto.link.request.AddLinkRequest;
 import ru.tinkoff.edu.java.bot.webclients.dto.link.request.RemoveLinkRequest;
@@ -25,6 +27,7 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
 
     private final ScrapperClient scrapperClient;
 
+    private final Counter messageCounter;
 
 
     @Override
@@ -33,14 +36,16 @@ public class UserManagerProcessorImpl implements UserManagerProcessor {
     }
 
 
-    public UserManagerProcessorImpl(ScrapperClient scrapperClient, Command... commands) {
+    public UserManagerProcessorImpl(ScrapperClient scrapperClient, MeterRegistry meterRegistry, Command... commands) {
         this.scrapperClient = scrapperClient;
         this.commands = Arrays.stream(commands).toList();
+        this.messageCounter = meterRegistry.counter("processed_message_counter");
     }
 
     @Override
     public SendMessage process(Update update) {
         for (var command : commands()) {
+            messageCounter.increment();
             if (command.supports(update)) return command.handle(update);
         }
         if (isReplyTrack(update)) {

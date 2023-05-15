@@ -5,6 +5,8 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import io.micrometer.core.instrument.*;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.InjectMocks;
@@ -19,6 +21,9 @@ import ru.tinkoff.edu.java.bot.webclients.implementations.ScrapperClientImpls;
 
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToLongFunction;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,11 +36,13 @@ public class ListTests {
 
     @Mock
     private ScrapperClientImpls client = Mockito.mock(ScrapperClientImpls.class);
+
+
+    private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
     @InjectMocks
     private ListCommand listCommand = new ListCommand(client);
     @InjectMocks
-    private UserManagerProcessorImpl messageProcessor = new UserManagerProcessorImpl(client, listCommand);
-
+    private UserManagerProcessorImpl messageProcessor = new UserManagerProcessorImpl(client, meterRegistry, listCommand);
 
     @Test
     public void invalidCommandTest() throws NoSuchFieldException, IllegalAccessException {
@@ -61,7 +68,6 @@ public class ListTests {
         var updateMessageField = Update.class.getDeclaredField("message");
         updateMessageField.setAccessible(true);
         updateMessageField.set(update, message);
-
 
         SendMessage messageFromListCommand = messageProcessor.process(update);
         assertThat(chatId, equalTo(messageFromListCommand.getParameters().get("chat_id")));
